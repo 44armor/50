@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>陸軍官校四十四期裝甲兵畢業50週年紀念 - 封面</title>
+	<link rel='stylesheet' href='style.css' media='all' />
+	<link rel='preconnect' href='https://fonts.gstatic.com/' crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+	<script async src="https://www.googletagmanager.com/gtag/js?id=GT-55XG78ZJ"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', 'GT-55XG78ZJ');
+	</script>
+</head>
+<body>
+
+	<header class="site-header">
+		<div class="container header-content">
+			<h1 class="site-title"><a href="index.html">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a></h1>
+			<button class="menu-toggle" aria-label="選單切換">☰</button>
+		</div>
+	</header>
+
+	<main class="site-main container">
+		<aside class="site-sidebar">
+            <nav class="sidebar-navigation">
+                <a href="index.html" class="active">封面</a>
+                <a href="inner-cover.html">封面內頁</a>
+                <a href="preface.html">序言</a>
+                <a href="greetings.html">賀詞</a>
+                <a href="catalog.html">目錄</a>
+                <a href="memories.html">述懷</a>
+                <a href="biography.html">生平記要</a>
+                <a href="photo-album.html">紀念圖冊</a>
+                <a href="postscript.html">編輯後記</a>
+                <a href="copyright.html">版權頁</a>
+                <a href="back-inner-cover.html">封底內頁</a>
+                <a href="back-cover.html">封底</a>
+                <a href="guestbook.html">留言板</a>
+            </nav>
+		</aside>
+
+		<section class="main-content">
+			<img src="content/B01-封面.jpg" alt="陸軍官校四十四期裝甲兵畢業50週年紀念封面" />
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>著作權所有，並保留一切權利</p>
+		</div>
+	</footer>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const menuToggle = document.querySelector('.menu-toggle');
+			const sidebarNavigation = document.querySelector('.sidebar-navigation');
+
+			if (menuToggle && sidebarNavigation) {
+				menuToggle.addEventListener('click', function() {
+					sidebarNavigation.classList.toggle('is-open');
+					this.setAttribute('aria-expanded', sidebarNavigation.classList.contains('is-open'));
+				});
+			}
+		});
+	</script>
+
+</body>
+</html>

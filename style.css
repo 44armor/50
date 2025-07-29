@@ -1,0 +1,343 @@
+/*
+Theme Name: Simple Armor Theme
+Description: Simplified custom styles for the 陸軍官校四十四期裝甲兵畢業50週年紀念 website.
+Version: 1.0
+Author: Gemini
+*/
+
+/* --- 1. CSS Reset & Basic Box Model --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote, dl, dd {
+    margin: 0;
+    padding: 0;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit; /* Inherit color from parent by default */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- 2. Global Body & Typography --- */
+body {
+    font-family: 'Roboto', 'Noto Sans TC', sans-serif; /* Fallback for Chinese characters */
+    line-height: 1.6;
+    color: #333; /* Default text color */
+    background-color: #f0f2f5; /* Light background for general content */
+}
+
+.container {
+    max-width: 1200px; /* Max width for content */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* --- 3. Header --- */
+.site-header {
+    background-color: #000; /* Dark background for header */
+    padding: 20px 0;
+    color: #fff; /* White text for header */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center; /* Center content */
+    align-items: center;
+    position: relative; /* For menu toggle positioning */
+    z-index: 1000; /* Ensure header is above slide-out menu */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between; /* Space out title and menu toggle */
+    align-items: center;
+    width: 100%;
+}
+
+.site-title {
+    font-size: 24px;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1; /* Allow title to take available space */
+}
+
+.site-title a {
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.site-title a:hover {
+    color: #FFED00; /* Bright Yellow on hover */
+}
+
+.menu-toggle { /* Hamburger icon for mobile */
+    display: none; /* Hidden on desktop by default, shown on mobile */
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001; /* Ensure it's above other elements */
+}
+
+/* --- 4. Main Content Area (Layout) --- */
+.site-main {
+    display: flex;
+    padding: 20px 0;
+    gap: 20px; /* Space between sidebar and main content */
+    background-color: #f0f2f5; /* Light background for content area */
+    align-items: flex-start; /* NEW: Align items to the top to prevent sidebar stretching unnecessarily */
+}
+
+/* --- 5. Sidebar Navigation --- */
+.site-sidebar {
+    width: 280px; /* Fixed width for sidebar on desktop */
+    flex-shrink: 0; /* NEW: Ensure sidebar doesn't shrink on desktop */
+    padding: 20px;
+    background-color: #1a202c; /* Dark background for sidebar */
+    color: #fff;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    position: sticky; /* Make sidebar sticky */
+    top: 20px; /* Stick to the top with some offset */
+    height: fit-content; /* Adjust height to content */
+    max-height: calc(100vh - 40px); /* Limit height to viewport minus offset */
+    overflow-y: auto; /* Enable scrolling for long content */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.sidebar-navigation {
+    display: flex; /* Links are stacked vertically */
+    flex-direction: column;
+    gap: 8px; /* Space between navigation links */
+}
+
+.sidebar-navigation a {
+    color: #8ed1fc; /* Light blue for links */
+    display: block; /* Make links block-level for easier clicking */
+    padding: 8px 10px; /* Padding for click area */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px; /* Slightly rounded links */
+}
+
+.sidebar-navigation a:hover,
+.sidebar-navigation a.active {
+    background-color: #0693e3; /* Vivid cyan blue background on hover/active */
+    color: #fff; /* White text on hover/active */
+    font-weight: bold;
+}
+
+/* --- 6. Main Content Display --- */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff; /* White background for main content */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px; /* Rounded corners */
+    display: flex; /* Use flexbox to center image */
+    justify-content: center;
+    align-items: flex-start; /* Align image to top */
+}
+
+.main-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Rounded corners for image */
+}
+
+/* 將以下樣式添加到您的 style.css 檔案中 */
+
+.member-profiles-grid {
+    display: grid;
+    /* auto-fill: 自動填充列，直到沒有空間為止。
+       minmax(180px, 1fr): 每列最小寬度180px，最大佔據可用空間的1份。 */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px; /* 網格項目之間的間距 */
+    margin-top: 20px; /* 網格與上方內容的間距 */
+}
+
+.member-entry-title {
+    background-color: #f9f9f9; /* 淺色背景 */
+    border: 1px solid #ddd; /* 淺灰色邊框 */
+    border-radius: 8px; /* 圓角 */
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 輕微陰影 */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    margin: 0; /* 移除 h3 預設的 margin */
+}
+
+.member-entry-title:hover {
+    transform: translateY(-5px); /* 鼠標懸停時上浮 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 陰影加深 */
+}
+
+.member-entry-title a {
+    color: #0693e3; /* 連結顏色 */
+    font-size: 1.1em; /* 稍微大一點的字體 */
+    font-weight: bold;
+    line-height: 1.4; /* 行高 */
+    display: block; /* 讓整個區塊可點擊 */
+}
+
+.member-entry-title a:hover {
+    color: #007bb5; /* 鼠標懸停時連結顏色變深 */
+}
+
+/* 手機版調整 (如果需要更細緻的控制，雖然 auto-fill 已經很好了) */
+@media (max-width: 767px) {
+    .member-profiles-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 在小螢幕上可以縮小一點 */
+        gap: 10px;
+    }
+    .member-entry-title {
+        font-size: 1em;
+        padding: 10px;
+    }
+}
+
+.chapter-category h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #003366;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #0055a5;
+    padding-bottom: 10px;
+}
+
+/* 每個分類標題 */
+.chapter-category h3 {
+    margin-top: 20px;
+    background-color: #0055a5;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+/* 連結列表使用 Grid 排版 */
+.pdf-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 10px 0 20px;
+}
+
+/* 每個 PDF 連結外框 */
+.pdf-link-entry {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    text-align: center;
+    padding: 10px;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+/* 連結文字 */
+.pdf-link-entry a {
+    color: #003366;
+    text-decoration: none;
+    display: block;
+}
+
+/* 滑鼠 hover 效果 */
+.pdf-link-entry:hover {
+    background-color: #f0f8ff;
+}
+.editor-notes {
+    display: flex;
+    flex-direction: column;  /* 垂直排列 */
+    align-items: center;     /* 圖片置中 */
+    gap: 20px;               /* 圖片之間的間距 */
+    margin: 20px 0;
+}
+
+.editor-notes img {
+    width: 90%;              /* 圖片寬度 90% 螢幕寬度 */
+    max-width: 800px;        /* 最大寬度 800px */
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* --- 7. Footer --- */
+.site-footer {
+    background-color: #000; /* Dark background for footer */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px; /* Space above footer */
+}
+
+/* --- 8. Media Queries for Responsiveness --- */
+@media (max-width: 1024px) { /* Tablet breakpoint */
+    .site-title {
+        font-size: 22px;
+        text-align: left; /* Align title left on tablet */
+    }
+
+    .menu-toggle {
+        display: block; /* Show hamburger menu on tablet/mobile */
+    }
+
+    .site-main {
+        flex-direction: column; /* Stack sidebar and main content */
+        padding: 15px;
+    }
+
+    .site-sidebar {
+        width: 100%; /* Full width for sidebar on tablet */
+        position: fixed; /* Fixed position for mobile slide-out menu */
+        top: 0;
+        left: -100%; /* Hidden off-screen by default */
+        height: 100vh; /* Full viewport height */
+        max-height: 100vh; /* Ensure it takes full height */
+        padding-top: 80px; /* Space for fixed header */
+        transition: left 0.3s ease-in-out; /* Smooth slide transition */
+        z-index: 999; /* Below header, above content */
+        border-radius: 0; /* No rounded corners for full-screen menu */
+    }
+
+    .site-sidebar.is-open {
+        left: 0; /* Slide in when open */
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 767px) { /* Mobile breakpoint */
+    .site-title {
+        font-size: 18px;
+    }
+
+    .site-header {
+        padding: 15px 0;
+    }
+
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .site-sidebar {
+        padding-top: 60px; /* Adjust padding for smaller header */
+    }
+}
