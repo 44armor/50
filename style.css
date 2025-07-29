@@ -163,9 +163,7 @@ body {
 
 .member-profiles-grid {
     display: grid;
-    /* auto-fill: 自動填充列，直到沒有空間為止。
-       minmax(180px, 1fr): 每列最小寬度180px，最大佔據可用空間的1份。 */
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(6, 1fr); /* 每行六欄 */
     gap: 20px; /* 網格項目之間的間距 */
     margin-top: 20px; /* 網格與上方內容的間距 */
 }
