@@ -1,72 +1,156 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>陸軍官校四十四期裝甲兵畢業50週年紀念 - 封面</title>
-	<link rel='stylesheet' href='style.css' media='all' />
-	<link rel='preconnect' href='https://fonts.gstatic.com/' crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-	<script async src="https://www.googletagmanager.com/gtag/js?id=GT-55XG78ZJ"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', 'GT-55XG78ZJ');
-	</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生平記要</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+        }
+        
+        .member-profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .member-entry-title {
+            margin: 0;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 15px 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .member-entry-title:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .member-entry-title a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9em;
+            display: block;
+            line-height: 1.4;
+        }
+        
+        .member-entry-title a:hover {
+            color: #ffe066;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 1024px) {
+            .member-profiles-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .member-profiles-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            
+            .member-entry-title {
+                padding: 12px 8px;
+            }
+            
+            .member-entry-title a {
+                font-size: 0.8em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .member-profiles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-	<header class="site-header">
-		<div class="container header-content">
-			<h1 class="site-title"><a href="index.html">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a></h1>
-			<button class="menu-toggle" aria-label="選單切換">☰</button>
-		</div>
-	</header>
-
-	<main class="site-main container">
-		<aside class="site-sidebar">
-            <nav class="sidebar-navigation">
-                <a href="index.html" class="active">封面</a>
-                <a href="inner-cover.html">封面內頁</a>
-                <a href="preface.html">序言</a>
-                <a href="greetings.html">賀詞</a>
-                <a href="catalog.html">目錄</a>
-                <a href="memories.html">述懷</a>
-                <a href="biography.html">生平記要</a>
-                <a href="photo-album.html">紀念圖冊</a>
-                <a href="postscript.html">編輯後記</a>
-                <a href="copyright.html">版權頁</a>
-                <a href="back-inner-cover.html">封底內頁</a>
-                <a href="back-cover.html">封底</a>
-                <a href="guestbook.html">留言板</a>
-            </nav>
-		</aside>
-
-		<section class="main-content">
-			<img src="content/B01-封面.jpg" alt="陸軍官校四十四期裝甲兵畢業50週年紀念封面" />
-		</section>
-	</main>
-
-	<footer class="site-footer">
-		<div class="container">
-			<p>著作權所有，並保留一切權利</p>
-		</div>
-	</footer>
-
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			const menuToggle = document.querySelector('.menu-toggle');
-			const sidebarNavigation = document.querySelector('.sidebar-navigation');
-
-			if (menuToggle && sidebarNavigation) {
-				menuToggle.addEventListener('click', function() {
-					sidebarNavigation.classList.toggle('is-open');
-					this.setAttribute('aria-expanded', sidebarNavigation.classList.contains('is-open'));
-				});
-			}
-		});
-	</script>
-
+    <section class="main-content">
+        <h2>生平記要</h2>
+        <div class="member-profiles-grid">
+            <h3 class="member-entry-title"><a href="content/44002-吳秋林.pdf" target="_blank">44002<br>吳秋林</a></h3>
+            <h3 class="member-entry-title"><a href="content/44010-李嘉榮.pdf" target="_blank">44010<br>李嘉榮</a></h3>
+            <h3 class="member-entry-title"><a href="content/44014-楊友仁.pdf" target="_blank">44014<br>楊友仁</a></h3>
+            <h3 class="member-entry-title"><a href="content/44025-王上瑞.pdf" target="_blank">44025<br>王上瑞</a></h3>
+            <h3 class="member-entry-title"><a href="content/44028-徐崇禮.pdf" target="_blank">44028<br>徐崇禮</a></h3>
+            <h3 class="member-entry-title"><a href="content/44033-嚴德發.pdf" target="_blank">44033<br>嚴德發</a></h3>
+            <h3 class="member-entry-title"><a href="content/44038-沈慶光.pdf" target="_blank">44038<br>沈慶光</a></h3>
+            <h3 class="member-entry-title"><a href="content/44041-王壽山.pdf" target="_blank">44041<br>王壽山</a></h3>
+            <h3 class="member-entry-title"><a href="content/44065-沈小偉.pdf" target="_blank">44065<br>沈小偉</a></h3>
+            <h3 class="member-entry-title"><a href="content/44081-陳燕翔.pdf" target="_blank">44081<br>陳燕翔</a></h3>
+            <h3 class="member-entry-title"><a href="content/44082-詹源煌.pdf" target="_blank">44082<br>詹源煌</a></h3>
+            <h3 class="member-entry-title"><a href="content/44109-李忠倫.pdf" target="_blank">44109<br>李忠倫</a></h3>
+            <h3 class="member-entry-title"><a href="content/44117-汪志雄.pdf" target="_blank">44117<br>汪志雄</a></h3>
+            <h3 class="member-entry-title"><a href="content/44125-邱新連.pdf" target="_blank">44125<br>邱新連</a></h3>
+            <h3 class="member-entry-title"><a href="content/44169-陳永茂.pdf" target="_blank">44169<br>陳永茂</a></h3>
+            <h3 class="member-entry-title"><a href="content/44196-馬福山.pdf" target="_blank">44196<br>馬福山</a></h3>
+            <h3 class="member-entry-title"><a href="content/44211-杜德成.pdf" target="_blank">44211<br>杜德成</a></h3>
+            <h3 class="member-entry-title"><a href="content/44227-虞義輝.pdf" target="_blank">44227<br>虞義輝</a></h3>
+            <h3 class="member-entry-title"><a href="content/44238-張新泉.pdf" target="_blank">44238<br>張新泉</a></h3>
+            <h3 class="member-entry-title"><a href="content/44285-柯鏗朗.pdf" target="_blank">44285<br>柯鏗朗</a></h3>
+            <h3 class="member-entry-title"><a href="content/44295-陳世仁.pdf" target="_blank">44295<br>陳世仁</a></h3>
+            <h3 class="member-entry-title"><a href="content/44305-陳台生.pdf" target="_blank">44305<br>陳台生</a></h3>
+            <h3 class="member-entry-title"><a href="content/44307-梁嘉禎.pdf" target="_blank">44307<br>梁嘉禎</a></h3>
+            <h3 class="member-entry-title"><a href="content/44311-周碩.pdf" target="_blank">44311<br>周碩</a></h3>
+            <h3 class="member-entry-title"><a href="content/44322-李金山.pdf" target="_blank">44322<br>李金山</a></h3>
+            <h3 class="member-entry-title"><a href="content/44326-張緯良.pdf" target="_blank">44326<br>張緯良</a></h3>
+            <h3 class="member-entry-title"><a href="content/44352-陳憲法.pdf" target="_blank">44352<br>陳憲法</a></h3>
+            <h3 class="member-entry-title"><a href="content/44396-陳順貴.pdf" target="_blank">44396<br>陳順貴</a></h3>
+            <h3 class="member-entry-title"><a href="content/44432-張立達.pdf" target="_blank">44432<br>張立達</a></h3>
+            <h3 class="member-entry-title"><a href="content/44436-陳逢源.pdf" target="_blank">44436<br>陳逢源</a></h3>
+            <h3 class="member-entry-title"><a href="content/44437-孫國台.pdf" target="_blank">44437<br>孫國台</a></h3>
+            <h3 class="member-entry-title"><a href="content/44449-劉興榮.pdf" target="_blank">44449<br>劉興榮</a></h3>
+            <h3 class="member-entry-title"><a href="content/44460-馮鐵漢.pdf" target="_blank">44460<br>馮鐵漢</a></h3>
+            <h3 class="member-entry-title"><a href="content/44490-盧志德.pdf" target="_blank">44490<br>盧志德</a></h3>
+            <h3 class="member-entry-title"><a href="content/44514-黃慶賢.pdf" target="_blank">44514<br>黃慶賢</a></h3>
+            <h3 class="member-entry-title"><a href="content/44545-莊謙亮.pdf" target="_blank">44545<br>莊謙亮</a></h3>
+            <h3 class="member-entry-title"><a href="content/44550-陳文賢.pdf" target="_blank">44550<br>陳文賢</a></h3>
+            <h3 class="member-entry-title"><a href="content/44554-古建誠.pdf" target="_blank">44554<br>古建誠</a></h3>
+            <h3 class="member-entry-title"><a href="content/44555-歐陽源.pdf" target="_blank">44555<br>歐陽源</a></h3>
+            <h3 class="member-entry-title"><a href="content/44559-郭祖安.pdf" target="_blank">44559<br>郭祖安</a></h3>
+            <h3 class="member-entry-title"><a href="content/44560-楊金烽.pdf" target="_blank">44560<br>楊金烽</a></h3>
+            <h3 class="member-entry-title"><a href="content/44566-符建華.pdf" target="_blank">44566<br>符建華</a></h3>
+            <h3 class="member-entry-title"><a href="content/44569-丁明鏡.pdf" target="_blank">44569<br>丁明鏡</a></h3>
+            <h3 class="member-entry-title"><a href="content/44619-劉正雄.pdf" target="_blank">44619<br>劉正雄</a></h3>
+            <h3 class="member-entry-title"><a href="content/44623-陳國欽.pdf" target="_blank">44623<br>陳國欽</a></h3>
+            <h3 class="member-entry-title"><a href="content/44631-蕭再發.pdf" target="_blank">44631<br>蕭再發</a></h3>
+            <h3 class="member-entry-title"><a href="content/44642-周清江.pdf" target="_blank">44642<br>周清江</a></h3>
+        </div>
+    </section>
 </body>
 </html>
