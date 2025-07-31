@@ -219,7 +219,10 @@
 							charCount.textContent = '0';
 							loadMessagesFromSheet();
 						})
-						.catch(() => showNotification('留言提交失敗', 'error'));
+						.catch(e => {
+							console.error(e);
+							showNotification('留言提交失敗', 'error');
+						});
 					} else {
 						showNotification('請填寫姓名和留言內容', 'error');
 					}
