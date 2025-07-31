@@ -45,21 +45,44 @@
 
 		<section class="main-content">
 			<h2>留言板</h2>
-			<p>這是紀念冊的留言板頁面內容。您可以在這裡添加留言功能。</p>
-			<form id="guestbook-form">
-				<label for="name">姓名:</label>
-				<input type="text" id="name" name="name" required>
+			<div class="guestbook-container">
+				<form id="guestbook-form" class="guestbook-form">
+					<div class="form-group">
+						<label for="name">姓名:</label>
+						<input type="text" id="name" name="name" required>
+					</div>
 
-				<label for="message">留言內容:</label>
-				<textarea id="message" name="message" rows="4" required></textarea>
+					<div class="form-group">
+						<label for="message">留言內容:</label>
+						<textarea id="message" name="message" rows="4" required></textarea>
+					</div>
 
-				<button type="submit">提交留言</button>
-			</form>
-			<div id="guestbook-messages">
-				<h3>留言列表</h3>
-				<ul id="messages-list">
-					<!-- 留言將在這裡顯示 -->
-				</ul>
+					<button type="submit" class="submit-btn">提交留言</button>
+				</form>
+				
+				<div id="guestbook-messages" class="guestbook-messages">
+					<h3>留言列表</h3>
+					<ul id="messages-list" class="messages-list">
+						<li class="message-item">
+							<div class="message-header">
+								<span class="message-author">張三</span>
+								<span class="message-date">2024-12-20 14:30</span>
+							</div>
+							<div class="message-content">
+								很榮幸能參與這次的畢業50週年紀念活動，回憶起當年的軍校生活，真是令人懷念！
+							</div>
+						</li>
+						<li class="message-item">
+							<div class="message-header">
+								<span class="message-author">李四</span>
+								<span class="message-date">2024-12-19 16:45</span>
+							</div>
+							<div class="message-content">
+								感謝主辦單位的用心籌備，讓我們這些老同學能夠再次相聚，分享彼此的人生故事。
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</section>
 	</main>
@@ -80,6 +103,85 @@
 					sidebarNavigation.classList.toggle('is-open');
 					this.setAttribute('aria-expanded', sidebarNavigation.classList.contains('is-open'));
 				});
+			}
+
+			// 留言板功能
+			const guestbookForm = document.getElementById('guestbook-form');
+			const messagesList = document.getElementById('messages-list');
+
+			if (guestbookForm) {
+				guestbookForm.addEventListener('submit', function(e) {
+					e.preventDefault();
+					
+					const name = document.getElementById('name').value.trim();
+					const message = document.getElementById('message').value.trim();
+					
+					if (name && message) {
+						// 創建新留言
+						const newMessage = createMessageElement(name, message);
+						messagesList.insertBefore(newMessage, messagesList.firstChild);
+						
+						// 清空表單
+						guestbookForm.reset();
+						
+						// 顯示成功訊息
+						showNotification('留言提交成功！', 'success');
+					} else {
+						showNotification('請填寫姓名和留言內容', 'error');
+					}
+				});
+			}
+
+			function createMessageElement(name, message) {
+				const li = document.createElement('li');
+				li.className = 'message-item';
+				
+				const now = new Date();
+				const dateString = now.toLocaleDateString('zh-TW') + ' ' + now.toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'});
+				
+				li.innerHTML = `
+					<div class="message-header">
+						<span class="message-author">${name}</span>
+						<span class="message-date">${dateString}</span>
+					</div>
+					<div class="message-content">${message}</div>
+				`;
+				
+				return li;
+			}
+
+			function showNotification(message, type) {
+				// 創建通知元素
+				const notification = document.createElement('div');
+				notification.style.cssText = `
+					position: fixed;
+					top: 20px;
+					right: 20px;
+					padding: 15px 20px;
+					border-radius: 8px;
+					color: white;
+					font-weight: 600;
+					z-index: 1000;
+					transform: translateX(100%);
+					transition: transform 0.3s ease;
+					background: ${type === 'success' ? '#28a745' : '#dc3545'};
+				`;
+				notification.textContent = message;
+				
+				document.body.appendChild(notification);
+				
+				// 顯示通知
+				setTimeout(() => {
+					notification.style.transform = 'translateX(0)';
+				}, 100);
+				
+				// 自動隱藏
+				setTimeout(() => {
+					notification.style.transform = 'translateX(100%)';
+					setTimeout(() => {
+						document.body.removeChild(notification);
+					}, 300);
+				}, 3000);
 			}
 		});
 	</script>
