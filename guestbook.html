@@ -180,12 +180,12 @@
 			}
 
 
-			// Google Sheets API URL
-			const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbz1GOg9CrMbkwIoWMkuRKqtVAKUbMH19OBUERA47mnZ6IUEC7lo4iaBpaBK5jTyd7m_/exec';
+			// SheetDB API URL
+			const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/08vh279maefzb'; // 已換成你的 SheetDB API 網址
 
-			// 載入留言（從 Google Sheets）
-			function loadMessagesFromSheet() {
-				fetch(SHEET_API_URL)
+			// 載入留言（從 SheetDB）
+			function loadMessagesFromSheetDB() {
+				fetch(SHEETDB_API_URL)
 				  .then(res => res.json())
 				  .then(messages => {
 					messagesList.innerHTML = '';
@@ -198,7 +198,7 @@
 			}
 
 			// 初始化載入留言
-			loadMessagesFromSheet();
+			loadMessagesFromSheetDB();
 
 			if (guestbookForm) {
 				guestbookForm.addEventListener('submit', function(e) {
@@ -206,18 +206,19 @@
 					const name = document.getElementById('name').value.trim();
 					const email = document.getElementById('email').value.trim();
 					const message = document.getElementById('message').value.trim();
+					const date = new Date().toLocaleString('zh-TW');
 					if (name && message) {
-						fetch(SHEET_API_URL, {
+						fetch(SHEETDB_API_URL, {
 							method: 'POST',
-							body: JSON.stringify({ name, email, message }),
-							headers: { 'Content-Type': 'application/json' }
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ data: { date, name, email, message } })
 						})
 						.then(res => res.json())
 						.then(() => {
 							showNotification('留言提交成功！', 'success');
 							guestbookForm.reset();
 							charCount.textContent = '0';
-							loadMessagesFromSheet();
+							loadMessagesFromSheetDB();
 						})
 						.catch(e => {
 							console.error(e);
