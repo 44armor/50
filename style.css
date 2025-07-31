@@ -208,6 +208,11 @@ body {
     }
 }
 
+.chapter-category {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 .chapter-category h2 {
     text-align: center;
     font-size: 28px;
