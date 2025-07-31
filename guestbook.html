@@ -106,13 +106,9 @@
 
 				<!-- 留言列表 -->
 				<div id="guestbook-messages" class="guestbook-messages">
-					<div class="messages-header">
-						<h3>💭 留言列表</h3>
-						<div class="messages-controls">
-							<button class="sort-btn active" data-sort="newest">最新</button>
-							<button class="sort-btn" data-sort="oldest">最早</button>
-						</div>
-					</div>
+<div class="messages-header">
+<h3>💭 留言列表</h3>
+</div>
 					<ul id="messages-list" class="messages-list">
 						<!-- 留言將在這裡顯示 -->
 					</ul>
@@ -189,29 +185,18 @@
 			const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/08vh279maefzb'; // 已換成你的 SheetDB API 網址
 
 
-			// 全域留言資料
-			let allMessages = [];
-			let currentSort = 'newest';
+// 全域留言資料
+let allMessages = [];
 
-			// 渲染留言列表
-			function renderMessages() {
-				messagesList.innerHTML = '';
-				let sorted = [...allMessages];
-				sorted.sort((a, b) => {
-					const dateA = new Date(a.date);
-					const dateB = new Date(b.date);
-					if (currentSort === 'newest') {
-						return dateB - dateA;
-					} else {
-						return dateA - dateB;
-					}
-				});
-				sorted.forEach(msg => {
-					const li = createMessageElement(msg.name, msg.message, msg.date, msg.email);
-					messagesList.appendChild(li);
-				});
-				updateStats();
-			}
+// 渲染留言列表（預設依照資料順序）
+function renderMessages() {
+	messagesList.innerHTML = '';
+	allMessages.forEach(msg => {
+		const li = createMessageElement(msg.name, msg.message, msg.date, msg.email);
+		messagesList.appendChild(li);
+	});
+	updateStats();
+}
 
 			// 載入留言（從 SheetDB）
 			function loadMessagesFromSheetDB() {
@@ -271,16 +256,6 @@
 							${email ? `<span class='message-email' style='margin-left:8px;color:#888;font-size:0.9em;'>${email}</span>` : ''}
 						</div>
 						<div class="message-content">${message}</div>
-						<div class="message-actions">
-							<button class="action-btn like-btn" onclick="toggleLike(this)">
-								<span class="action-icon">👍</span>
-								<span class="action-text">讚</span>
-							</button>
-							<button class="action-btn reply-btn" onclick="showReplyForm(this)">
-								<span class="action-icon">💬</span>
-								<span class="action-text">回覆</span>
-							</button>
-						</div>
 					</div>
 				`;
 				return li;
@@ -335,20 +310,7 @@
 				}, 3000);
 			}
 
-			// 排序功能
-			document.querySelectorAll('.sort-btn').forEach(button => {
-				button.addEventListener('click', function() {
-					const sortBy = this.dataset.sort;
-					currentSort = sortBy;
-					renderMessages();
-					this.classList.add('active');
-					document.querySelectorAll('.sort-btn').forEach(btn => {
-						if (btn !== this) {
-							btn.classList.remove('active');
-						}
-					});
-				});
-			});
+
 
 			// 清空表單功能
 			function clearForm() {
@@ -357,92 +319,7 @@
 				showNotification('表單已清空', 'info');
 			}
 
-			// 回覆功能 (示例，實際需要更複雜的邏輯)
-			window.showReplyForm = function(button) {
-				const messageItem = button.closest('.message-item');
-				const replyForm = document.createElement('form');
-				replyForm.className = 'reply-form';
-				replyForm.innerHTML = `
-					<div class="form-group">
-						<label for="reply-name">回覆者姓名 <span class="required">*</span></label>
-						<input type="text" id="reply-name" name="reply-name" placeholder="請輸入您的姓名" required>
-					</div>
-					<div class="form-group">
-						<label for="reply-message">回覆內容 <span class="required">*</span></label>
-						<textarea id="reply-message" name="reply-message" rows="3" placeholder="請輸入您的回覆..." required></textarea>
-						<div class="char-counter">
-							<span id="reply-char-count">0</span> / 200 字
-						</div>
-					</div>
-					<div class="form-actions">
-						<button type="button" class="clear-btn" onclick="clearReplyForm(this.form)">清空</button>
-						<button type="submit" class="submit-btn">
-							<span class="btn-icon">📤</span>
-							提交回覆
-						</button>
-					</div>
-				`;
-				messageItem.appendChild(replyForm);
 
-				const replyCharCount = replyForm.querySelector('#reply-char-count');
-				const replyMessageInput = replyForm.querySelector('#reply-message');
-				replyMessageInput.addEventListener('input', function() {
-					replyCharCount.textContent = this.value.length;
-				});
-
-				replyForm.addEventListener('submit', function(e) {
-					e.preventDefault();
-					const replyName = replyForm.querySelector('#reply-name').value.trim();
-					const replyMessage = replyForm.querySelector('#reply-message').value.trim();
-
-					if (replyName && replyMessage) {
-						const newReply = createReplyElement(replyName, replyMessage);
-						messageItem.appendChild(newReply);
-						replyCharCount.textContent = '0';
-						showNotification('回覆提交成功！', 'success');
-						replyForm.remove();
-					} else {
-						showNotification('請填寫回覆者姓名和回覆內容', 'error');
-					}
-				});
-			}
-
-			function createReplyElement(name, message) {
-				const li = document.createElement('li');
-				li.className = 'reply-item';
-				li.innerHTML = `
-					<div class="reply-header">
-						<span class="reply-author">${name}</span>
-						<span class="reply-date">${new Date().toLocaleDateString('zh-TW') + ' ' + new Date().toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'})}</span>
-					</div>
-					<div class="reply-content">${message}</div>
-				`;
-				return li;
-			}
-
-			window.clearReplyForm = function(form) {
-				form.reset();
-				document.getElementById('reply-char-count').textContent = '0';
-				showNotification('回覆表單已清空', 'info');
-			}
-
-			// 點讚功能 (示例，實際需要更複雜的邏輯)
-			window.toggleLike = function(button) {
-				const likeIcon = button.querySelector('.action-icon');
-				const likeText = button.querySelector('.action-text');
-				const originalIcon = likeIcon.textContent;
-				const originalText = likeText.textContent;
-
-				if (likeIcon.textContent === '👍') {
-					likeIcon.textContent = '👎';
-					likeText.textContent = '取消讚';
-					showNotification('您已取消讚！', 'info');
-				} else {
-					likeIcon.textContent = '👍';
-					likeText.textContent = '讚';
-					showNotification('您已點讚！', 'success');
-				}
-			}
 		});
 	</script>
 
