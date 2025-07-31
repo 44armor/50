@@ -179,38 +179,26 @@
 				});
 			}
 
-			// localStorage key
-			const STORAGE_KEY = 'guestbook-messages';
 
-			// 載入留言
-			function loadMessages() {
-				const data = localStorage.getItem(STORAGE_KEY);
-				if (!data) return [];
-				try {
-					return JSON.parse(data);
-				} catch {
-					return [];
-				}
-			}
+			// Google Sheets API URL
+			const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwsMwwpxkqDgwlhb8xYx5VZWVbOjPA5FqyTPdxePJSuer-omqyDoQEQXz9N6sspO6kA/exec';
 
-			// 儲存留言
-			function saveMessages(messages) {
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-			}
-
-			// 渲染所有留言
-			function renderMessages(messages) {
-				messagesList.innerHTML = '';
-				messages.forEach(msg => {
-					const li = createMessageElement(msg.name, msg.message, msg.date);
-					messagesList.appendChild(li);
-				});
-				updateStats();
+			// 載入留言（從 Google Sheets）
+			function loadMessagesFromSheet() {
+				fetch(SHEET_API_URL)
+				  .then(res => res.json())
+				  .then(messages => {
+					messagesList.innerHTML = '';
+					messages.reverse().forEach(msg => {
+					  const li = createMessageElement(msg.name, msg.message, msg.date);
+					  messagesList.appendChild(li);
+					});
+					updateStats();
+				  });
 			}
 
 			// 初始化載入留言
-			let allMessages = loadMessages();
-			renderMessages(allMessages);
+			loadMessagesFromSheet();
 
 			if (guestbookForm) {
 				guestbookForm.addEventListener('submit', function(e) {
@@ -218,16 +206,19 @@
 					const name = document.getElementById('name').value.trim();
 					const message = document.getElementById('message').value.trim();
 					if (name && message) {
-						// 新留言物件
-						const now = new Date();
-						const dateString = now.toLocaleDateString('zh-TW') + ' ' + now.toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'});
-						const msgObj = { name, message, date: dateString };
-						allMessages.unshift(msgObj);
-						saveMessages(allMessages);
-						renderMessages(allMessages);
-						guestbookForm.reset();
-						charCount.textContent = '0';
-						showNotification('留言提交成功！', 'success');
+						fetch(SHEET_API_URL, {
+							method: 'POST',
+							body: JSON.stringify({ name, message }),
+							headers: { 'Content-Type': 'application/json' }
+						})
+						.then(res => res.json())
+						.then(() => {
+							showNotification('留言提交成功！', 'success');
+							guestbookForm.reset();
+							charCount.textContent = '0';
+							loadMessagesFromSheet();
+						})
+						.catch(() => showNotification('留言提交失敗', 'error'));
 					} else {
 						showNotification('請填寫姓名和留言內容', 'error');
 					}
