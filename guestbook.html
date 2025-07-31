@@ -28,21 +28,21 @@
 
 	<main class="site-main container">
 		<aside class="site-sidebar">
-            <nav class="sidebar-navigation">
-                <a href="index.html">封面</a>
-                <a href="inner-cover.html">封面內頁</a>
-                <a href="preface.html">序言</a>
-                <a href="greetings.html">賀詞</a>
-                <a href="catalog.html">目錄</a>
-                <a href="memories.html">述懷</a>
-                <a href="biography.html">生平記要</a>
-                <a href="photo-album.html">紀念圖冊</a>
-                <a href="postscript.html">編輯後記</a>
-                <a href="copyright.html">版權頁</a>
-                <a href="back-inner-cover.html">封底內頁</a>
-                <a href="back-cover.html">封底</a>
-                <a href="guestbook.html" class="active">留言板</a>
-            </nav>
+			<nav class="sidebar-navigation">
+				<a href="index.html">封面</a>
+				<a href="inner-cover.html">封面內頁</a>
+				<a href="preface.html">序言</a>
+				<a href="greetings.html">賀詞</a>
+				<a href="catalog.html">目錄</a>
+				<a href="memories.html">述懷</a>
+				<a href="biography.html">生平記要</a>
+				<a href="photo-album.html">紀念圖冊</a>
+				<a href="postscript.html">編輯後記</a>
+				<a href="copyright.html">版權頁</a>
+				<a href="back-inner-cover.html">封底內頁</a>
+				<a href="back-cover.html">封底</a>
+				<a href="guestbook.html" class="active">留言板</a>
+			</nav>
 		</aside>
 
 		<section class="main-content">
@@ -179,26 +179,54 @@
 				});
 			}
 
+			// localStorage key
+			const STORAGE_KEY = 'guestbook-messages';
+
+			// 載入留言
+			function loadMessages() {
+				const data = localStorage.getItem(STORAGE_KEY);
+				if (!data) return [];
+				try {
+					return JSON.parse(data);
+				} catch {
+					return [];
+				}
+			}
+
+			// 儲存留言
+			function saveMessages(messages) {
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+			}
+
+			// 渲染所有留言
+			function renderMessages(messages) {
+				messagesList.innerHTML = '';
+				messages.forEach(msg => {
+					const li = createMessageElement(msg.name, msg.message, msg.date);
+					messagesList.appendChild(li);
+				});
+				updateStats();
+			}
+
+			// 初始化載入留言
+			let allMessages = loadMessages();
+			renderMessages(allMessages);
+
 			if (guestbookForm) {
 				guestbookForm.addEventListener('submit', function(e) {
 					e.preventDefault();
-					
 					const name = document.getElementById('name').value.trim();
 					const message = document.getElementById('message').value.trim();
-					
 					if (name && message) {
-						// 創建新留言
-						const newMessage = createMessageElement(name, message);
-						messagesList.insertBefore(newMessage, messagesList.firstChild);
-						
-						// 更新統計
-						updateStats();
-						
-						// 清空表單
+						// 新留言物件
+						const now = new Date();
+						const dateString = now.toLocaleDateString('zh-TW') + ' ' + now.toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'});
+						const msgObj = { name, message, date: dateString };
+						allMessages.unshift(msgObj);
+						saveMessages(allMessages);
+						renderMessages(allMessages);
 						guestbookForm.reset();
-						charCount.textContent = '0'; // 清空字數計數
-						
-						// 顯示成功訊息
+						charCount.textContent = '0';
 						showNotification('留言提交成功！', 'success');
 					} else {
 						showNotification('請填寫姓名和留言內容', 'error');
@@ -206,17 +234,12 @@
 				});
 			}
 
-			function createMessageElement(name, message) {
+			function createMessageElement(name, message, date) {
 				const li = document.createElement('li');
 				li.className = 'message-item';
-				
-				const now = new Date();
-				const dateString = now.toLocaleDateString('zh-TW') + ' ' + now.toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'});
-				
-				// 使用全名而不是姓氏
 				const displayName = name;
 				const avatarText = name.charAt(0);
-				
+				const dateString = date || (new Date().toLocaleDateString('zh-TW') + ' ' + new Date().toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'}));
 				li.innerHTML = `
 					<div class="message-avatar">${avatarText}</div>
 					<div class="message-content-wrapper">
@@ -237,7 +260,6 @@
 						</div>
 					</div>
 				`;
-				
 				return li;
 			}
 
