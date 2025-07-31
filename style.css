@@ -299,44 +299,62 @@ body {
 }
 
 /* --- 8. Media Queries for Responsiveness --- */
-@media (max-width: 1024px) { /* Tablet breakpoint */
+@media (max-width: 1024px) {
     .site-title {
         font-size: 22px;
         text-align: left; /* Align title left on tablet */
     }
 
     .menu-toggle {
-        display: block; /* Show hamburger menu on tablet/mobile */
+        display: block !important; /* Show hamburger menu on tablet/mobile */
     }
 
     .site-main {
         flex-direction: column; /* Stack sidebar and main content */
-        padding: 15px;
+        padding: 10px 0;
     }
 
     .site-sidebar {
-        width: 100%; /* Full width for sidebar on tablet */
-        position: fixed; /* Fixed position for mobile slide-out menu */
+        width: 80vw;
+        max-width: 320px;
+        position: fixed;
+        left: -100vw;
         top: 0;
-        left: -100%; /* Hidden off-screen by default */
-        height: 100vh; /* Full viewport height */
-        max-height: 100vh; /* Ensure it takes full height */
-        padding-top: 80px; /* Space for fixed header */
-        transition: left 0.3s ease-in-out; /* Smooth slide transition */
-        z-index: 999; /* Below header, above content */
-        border-radius: 0; /* No rounded corners for full-screen menu */
+        height: 100vh;
+        background: #1a202c;
+        z-index: 1200;
+        box-shadow: 2px 0 16px rgba(0,0,0,0.18);
+        transition: left 0.3s cubic-bezier(.4,0,.2,1);
+        padding-top: 70px;
+        border-radius: 0;
     }
-
     .site-sidebar.is-open {
-        left: 0; /* Slide in when open */
+        left: 0;
+    }
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 1100;
+    }
+    .sidebar-overlay.active {
+        display: block;
+    }
+    .menu-toggle {
+        display: block !important;
+        position: absolute;
+        left: 15px;
+        top: 18px;
+        z-index: 1300;
     }
 
     .main-content {
-        padding: 15px;
+        padding: 10px 0;
     }
 }
 
-@media (max-width: 767px) { /* Mobile breakpoint */
+@media (max-width: 767px) {
     .site-title {
         font-size: 18px;
     }
@@ -351,7 +369,13 @@ body {
     }
 
     .site-sidebar {
+        width: 90vw;
+        max-width: 98vw;
         padding-top: 60px; /* Adjust padding for smaller header */
+    }
+    .menu-toggle {
+        top: 10px;
+        left: 10px;
     }
 }
 
@@ -801,5 +825,119 @@ body {
     
     .message-actions {
         flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .guestbook-container {
+        padding: 0 2vw;
+    }
+    .guestbook-welcome {
+        padding: 18px 4vw;
+        font-size: 15px;
+    }
+    .guestbook-form-section {
+        border-radius: 10px;
+        margin-bottom: 18px;
+    }
+    .section-title {
+        padding: 12px 4vw;
+        font-size: 17px;
+    }
+    .guestbook-form {
+        padding: 10px 0;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .form-group input,
+    .form-group textarea {
+        padding: 10px 10px;
+        font-size: 14px;
+    }
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .submit-btn,
+    .clear-btn {
+        width: 100%;
+        justify-content: center;
+        font-size: 15px;
+        padding: 10px 0;
+    }
+    .guestbook-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+    .stat-item {
+        padding: 15px 0;
+        font-size: 15px;
+    }
+    .stat-number {
+        font-size: 22px;
+    }
+    .stat-label {
+        font-size: 12px;
+    }
+    .messages-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 12px 4vw;
+    }
+    .messages-header h3 {
+        font-size: 16px;
+    }
+    .sort-btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    .guestbook-messages {
+        border-radius: 10px;
+    }
+    .messages-list {
+        padding: 0;
+    }
+    .message-item {
+        padding: 12px 4vw;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .message-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+    }
+    .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .message-content {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .message-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .action-btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    .reply-form, .reply-item {
+        padding: 10px 4vw;
+        font-size: 13px;
+    }
+    .reply-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .reply-content {
+        font-size: 13px;
     }
 }
