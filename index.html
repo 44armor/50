@@ -91,8 +91,8 @@
 
 			// Google Analytics Pageview Counter (GA4 Data API)
 			// 需在GA4啟用API並設置API_KEY與propertyId
-			const apiKey = '';
-			const propertyId = '';
+			const apiKey = 'AIzaSyDiN8wmNIyvGv-xljZS-aquO17FWwvgCkc';
+			const propertyId = '499136442';
 			const visitCountEl = document.getElementById('visit-count');
 			if (apiKey && propertyId && visitCountEl) {
 				fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
