@@ -181,7 +181,7 @@
 
 
 			// Google Sheets API URL
-			const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwsMwwpxkqDgwlhb8xYx5VZWVbOjPA5FqyTPdxePJSuer-omqyDoQEQXz9N6sspO6kA/exec';
+			const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwSKTcbLEebS1r48TvQnkkOFVsp4l26kL1wsl5-_ZBVAsMjUkQJcLTQ83rsMncafisp/exec';
 
 			// 載入留言（從 Google Sheets）
 			function loadMessagesFromSheet() {
@@ -190,7 +190,7 @@
 				  .then(messages => {
 					messagesList.innerHTML = '';
 					messages.reverse().forEach(msg => {
-					  const li = createMessageElement(msg.name, msg.message, msg.date);
+					  const li = createMessageElement(msg.name, msg.message, msg.date, msg.email);
 					  messagesList.appendChild(li);
 					});
 					updateStats();
@@ -204,11 +204,12 @@
 				guestbookForm.addEventListener('submit', function(e) {
 					e.preventDefault();
 					const name = document.getElementById('name').value.trim();
+					const email = document.getElementById('email').value.trim();
 					const message = document.getElementById('message').value.trim();
 					if (name && message) {
 						fetch(SHEET_API_URL, {
 							method: 'POST',
-							body: JSON.stringify({ name, message }),
+							body: JSON.stringify({ name, email, message }),
 							headers: { 'Content-Type': 'application/json' }
 						})
 						.then(res => res.json())
@@ -226,32 +227,34 @@
 			}
 
 			function createMessageElement(name, message, date) {
-				const li = document.createElement('li');
-				li.className = 'message-item';
-				const displayName = name;
-				const avatarText = name.charAt(0);
-				const dateString = date || (new Date().toLocaleDateString('zh-TW') + ' ' + new Date().toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'}));
-				li.innerHTML = `
-					<div class="message-avatar">${avatarText}</div>
-					<div class="message-content-wrapper">
-						<div class="message-header">
-							<span class="message-author">${displayName}</span>
-							<span class="message-date">${dateString}</span>
+				function createMessageElement(name, message, date, email) {
+					const li = document.createElement('li');
+					li.className = 'message-item';
+					const displayName = name;
+					const avatarText = name ? name.charAt(0) : '?';
+					const dateString = date || (new Date().toLocaleDateString('zh-TW') + ' ' + new Date().toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'}));
+					li.innerHTML = `
+						<div class="message-avatar">${avatarText}</div>
+						<div class="message-content-wrapper">
+							<div class="message-header">
+								<span class="message-author">${displayName}</span>
+								<span class="message-date">${dateString}</span>
+								${email ? `<span class='message-email' style='margin-left:8px;color:#888;font-size:0.9em;'>${email}</span>` : ''}
+							</div>
+							<div class="message-content">${message}</div>
+							<div class="message-actions">
+								<button class="action-btn like-btn" onclick="toggleLike(this)">
+									<span class="action-icon">👍</span>
+									<span class="action-text">讚</span>
+								</button>
+								<button class="action-btn reply-btn" onclick="showReplyForm(this)">
+									<span class="action-icon">💬</span>
+									<span class="action-text">回覆</span>
+								</button>
+							</div>
 						</div>
-						<div class="message-content">${message}</div>
-						<div class="message-actions">
-							<button class="action-btn like-btn" onclick="toggleLike(this)">
-								<span class="action-icon">👍</span>
-								<span class="action-text">讚</span>
-							</button>
-							<button class="action-btn reply-btn" onclick="showReplyForm(this)">
-								<span class="action-icon">💬</span>
-								<span class="action-text">回覆</span>
-							</button>
-						</div>
-					</div>
-				`;
-				return li;
+					`;
+					return li;
 			}
 
 			function updateStats() {
