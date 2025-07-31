@@ -17,6 +17,8 @@
 </head>
 <body>
 
+	<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 	<header class="site-header">
 		<div class="container header-content">
 			<h1 class="site-title"><a href="index.html">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a></h1>
@@ -67,11 +69,29 @@
 		document.addEventListener('DOMContentLoaded', function() {
 			const menuToggle = document.querySelector('.menu-toggle');
 			const sidebarNavigation = document.querySelector('.sidebar-navigation');
+			const sidebar = document.querySelector('.site-sidebar');
+			const overlay = document.getElementById('sidebarOverlay');
 
-			if (menuToggle && sidebarNavigation) {
-				menuToggle.addEventListener('click', function() {
-					sidebarNavigation.classList.toggle('is-open');
-					this.setAttribute('aria-expanded', sidebarNavigation.classList.contains('is-open'));
+			function closeSidebar() {
+				sidebar.classList.remove('is-open');
+				overlay.classList.remove('active');
+				menuToggle.setAttribute('aria-expanded', 'false');
+			}
+
+			if (menuToggle && sidebarNavigation && sidebar && overlay) {
+				menuToggle.addEventListener('click', function(e) {
+					e.stopPropagation();
+					sidebar.classList.toggle('is-open');
+					overlay.classList.toggle('active', sidebar.classList.contains('is-open'));
+					this.setAttribute('aria-expanded', sidebar.classList.contains('is-open'));
+				});
+
+				overlay.addEventListener('click', closeSidebar);
+
+				sidebarNavigation.addEventListener('click', function(e) {
+					if (e.target.tagName === 'A') {
+						closeSidebar();
+					}
 				});
 			}
 		});
