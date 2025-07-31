@@ -127,7 +127,12 @@
 		</div>
 	</footer>
 
-	<script>
+		<script>
+		// 先宣告全域函式，確保 inline onclick 可用
+		window.showReplyForm = function(){};
+		window.clearReplyForm = function(){};
+		window.toggleLike = function(){};
+
 		document.addEventListener('DOMContentLoaded', function() {
 			const menuToggle = document.querySelector('.menu-toggle');
 			const sidebarNavigation = document.querySelector('.sidebar-navigation');
@@ -344,7 +349,7 @@
 			}
 
 			// 回覆功能 (示例，實際需要更複雜的邏輯)
-			function showReplyForm(button) {
+			window.showReplyForm = function(button) {
 				const messageItem = button.closest('.message-item');
 				const replyForm = document.createElement('div');
 				replyForm.className = 'reply-form';
@@ -405,14 +410,14 @@
 				return li;
 			}
 
-			function clearReplyForm(form) {
+			window.clearReplyForm = function(form) {
 				form.reset();
 				document.getElementById('reply-char-count').textContent = '0';
 				showNotification('回覆表單已清空', 'info');
 			}
 
 			// 點讚功能 (示例，實際需要更複雜的邏輯)
-			function toggleLike(button) {
+			window.toggleLike = function(button) {
 				const likeIcon = button.querySelector('.action-icon');
 				const likeText = button.querySelector('.action-text');
 				const originalIcon = likeIcon.textContent;
