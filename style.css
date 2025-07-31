@@ -160,10 +160,12 @@ body {
 }
 
 .main-content h2 {
-    text-align: center;
+    text-align: center !important;
     margin-top: 0;
     margin-bottom: 30px;
     padding-top: 20px;
+    font-size: 28px;
+    color: #003366;
 }
 
 /* 將以下樣式添加到您的 style.css 檔案中 */
