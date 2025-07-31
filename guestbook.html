@@ -351,7 +351,7 @@
 			// 回覆功能 (示例，實際需要更複雜的邏輯)
 			window.showReplyForm = function(button) {
 				const messageItem = button.closest('.message-item');
-				const replyForm = document.createElement('div');
+				const replyForm = document.createElement('form');
 				replyForm.className = 'reply-form';
 				replyForm.innerHTML = `
 					<div class="form-group">
@@ -366,7 +366,7 @@
 						</div>
 					</div>
 					<div class="form-actions">
-						<button type="button" class="clear-btn" onclick="clearReplyForm(replyForm)">清空</button>
+						<button type="button" class="clear-btn" onclick="clearReplyForm(this.form)">清空</button>
 						<button type="submit" class="submit-btn">
 							<span class="btn-icon">📤</span>
 							提交回覆
@@ -375,22 +375,23 @@
 				`;
 				messageItem.appendChild(replyForm);
 
-				const replyCharCount = document.getElementById('reply-char-count');
-				const replyMessageInput = document.getElementById('reply-message');
+				const replyCharCount = replyForm.querySelector('#reply-char-count');
+				const replyMessageInput = replyForm.querySelector('#reply-message');
 				replyMessageInput.addEventListener('input', function() {
 					replyCharCount.textContent = this.value.length;
 				});
 
 				replyForm.addEventListener('submit', function(e) {
 					e.preventDefault();
-					const replyName = document.getElementById('reply-name').value.trim();
-					const replyMessage = document.getElementById('reply-message').value.trim();
+					const replyName = replyForm.querySelector('#reply-name').value.trim();
+					const replyMessage = replyForm.querySelector('#reply-message').value.trim();
 
 					if (replyName && replyMessage) {
 						const newReply = createReplyElement(replyName, replyMessage);
 						messageItem.appendChild(newReply);
 						replyCharCount.textContent = '0';
 						showNotification('回覆提交成功！', 'success');
+						replyForm.remove();
 					} else {
 						showNotification('請填寫回覆者姓名和回覆內容', 'error');
 					}
