@@ -611,9 +611,19 @@
             const currentLikes = parseInt(comment.likes) || 0;
             const newLikes = currentLikes + 1;
 
-            // 這裡需要更新 Google Sheets 的資料
-            // 由於 SheetDB 的限制，可能需要使用其他方法來更新按讚數
-            showNotification('按讚功能開發中...', 'info');
+            fetch(`${SHEETDB_API_URL}/id/${commentId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: { likes: newLikes } })
+            })
+            .then(res => res.json())
+            .then(data => {
+                showNotification('按讚成功！', 'success');
+                loadComments();
+            })
+            .catch(error => {
+                showNotification('按讚失敗', 'error');
+            });
         }
 
         // 刪除留言（管理員功能）
