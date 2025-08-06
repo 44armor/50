@@ -22,7 +22,10 @@
 
 	<header class="site-header">
 		<div class="container header-content">
-			<h1 class="site-title"><a href="index.html">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a></h1>
+			<h1 class="site-title" style="display:flex;align-items:center;gap:16px;">
+				<a href="index.html">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a>
+				<span id="visit-count-header" style="margin-left:16px;color:#888;font-size:0.95em;"></span>
+			</h1>
 			<button class="menu-toggle" aria-label="選單切換">☰</button>
 		</div>
 	</header>
@@ -95,7 +98,15 @@
 			const apiKey = 'AIzaSyDiN8wmNIyvGv-xljZS-aquO17FWwvgCkc';
 			const propertyId = '499136442';
 			const visitCountEl = document.getElementById('visit-count');
-			if (apiKey && propertyId && visitCountEl) {
+			const visitCountHeaderEl = document.getElementById('visit-count-header');
+
+			// 將計數器顯示在 header 標題右側
+			function setHeaderVisitCount(text) {
+				var el = document.getElementById('visit-count-header');
+				if (el) el.textContent = text;
+			}
+
+			if (apiKey && propertyId) {
 				fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
 					method: 'POST',
 					headers: {
@@ -118,7 +129,7 @@
 				.then(data => {
 					const count = data.rows && data.rows[0] ? data.rows[0].metricValues[0].value : null;
 					if (count) {
-						visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
+						setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
 					}
 				})
 				.catch(() => {});

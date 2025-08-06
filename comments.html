@@ -372,6 +372,7 @@
     <footer class="site-footer">
         <div class="container">
             <p>版權開放，歡迎使用</p>
+            <p id="visit-count" style="margin-top:8px;color:#888;font-size:0.95em;"></p>
         </div>
     </footer>
 
@@ -386,6 +387,21 @@
             initializeSidebar();
             loadComments();
             setupEventListeners();
+
+            // 訪客計數器（本地端模擬，僅供展示）
+            const visitKey = 'comments_visit_count';
+            let count = localStorage.getItem(visitKey);
+            if (!count) {
+                count = 1;
+                localStorage.setItem(visitKey, count);
+            } else {
+                count = parseInt(count) + 1;
+                localStorage.setItem(visitKey, count);
+            }
+            const visitCountEl = document.getElementById('visit-count');
+            if (visitCountEl) {
+                visitCountEl.textContent = `本頁累計拜訪人數（本機模擬）：${count}`;
+            }
         });
 
         // 側邊欄功能
