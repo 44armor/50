@@ -141,18 +141,7 @@ body {
     font-weight: bold;
 }
 
-/* 生平記要選單特殊樣式 */
-.sidebar-navigation a[href="biography.html"] {
-    background-color: #003366 !important; /* 深藍色底色 */
-    color: #fff !important;
-    font-weight: bold;
-}
 
-.sidebar-navigation a[href="biography.html"]:hover {
-    background-color: #004080 !important; /* 深藍色底色，hover時稍微亮一點 */
-    color: #fff !important;
-    font-weight: bold;
-}
 
 /* --- 6. Main Content Display --- */
 .main-content {
@@ -215,6 +204,12 @@ body {
 
 .member-entry-title a:hover {
     color: #007bb5; /* 鼠標懸停時連結顏色變深 */
+}
+
+.special-blue {
+    background-color: #003366 !important;
+    color: #fff !important;
+    font-weight: bold;
 }
 
 /* 手機版調整 (如果需要更細緻的控制，雖然 auto-fill 已經很好了) */
