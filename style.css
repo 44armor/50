@@ -141,6 +141,19 @@ body {
     font-weight: bold;
 }
 
+/* 生平記要選單特殊樣式 */
+.sidebar-navigation a[href="biography.html"] {
+    background-color: #003366; /* 深藍色底色 */
+    color: #fff;
+    font-weight: bold;
+}
+
+.sidebar-navigation a[href="biography.html"]:hover {
+    background-color: #004080; /* 深藍色底色，hover時稍微亮一點 */
+    color: #fff;
+    font-weight: bold;
+}
+
 /* --- 6. Main Content Display --- */
 .main-content {
     flex-grow: 1;
