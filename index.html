@@ -21,11 +21,11 @@
 	<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 	<header class="site-header">
-		<div class="container header-content">
-			<h1 class="site-title" style="display:flex;align-items:center;gap:16px;">
-				<a href="index.html">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a>
-				<span id="visit-count-header" style="margin-left:16px;color:#888;font-size:0.95em;"></span>
+		<div class="container header-content" style="position:relative;">
+			<h1 class="site-title" style="text-align:center;width:100%;margin:0 auto;">
+				<a href="index.html" style="display:inline-block;">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a>
 			</h1>
+			<span id="visit-count-header" style="position:absolute;top:0;right:0;color:#888;font-size:0.95em;padding:8px 18px;"></span>
 			<button class="menu-toggle" aria-label="選單切換">☰</button>
 		</div>
 	</header>
@@ -92,49 +92,49 @@
 				});
 			}
 
-			// Google Analytics Pageview Counter (GA4 Data API)
-			// 需在GA4啟用API並設置API_KEY與propertyId
-			const apiKey = 'AIzaSyDiN8wmNIyvGv-xljZS-aquO17FWwvgCkc';
-			const propertyId = '499136442';
+			// SheetDB 訪問計數器
+			const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/7w5r8owgrglqq'; // 請替換為你的 SheetDB API
+			const PAGE_ID = 'index.html';
 			const visitCountEl = document.getElementById('visit-count');
 			const visitCountHeaderEl = document.getElementById('visit-count-header');
 
-			// 將計數器顯示在 header 標題右側
+			// 讀取並更新計數
+			function updateVisitCount() {
+				// 先讀取目前計數
+				fetch(`${SHEETDB_API_URL}/search?page_id=${PAGE_ID}`)
+					.then(res => res.json())
+					.then(data => {
+						let count = 0;
+						if (data.length > 0) {
+							count = parseInt(data[0].count) || 0;
+						}
+						// 增加1
+						count++;
+						// 更新 SheetDB
+						fetch(`${SHEETDB_API_URL}/id/${data[0] ? data[0].id : ''}`, {
+							method: data[0] ? 'PATCH' : 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({
+								data: data[0] ? { count: count } : { page_id: PAGE_ID, count: count }
+							})
+						})
+						.then(() => {
+							setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
+							if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
+						});
+					})
+					.catch(() => {
+						setHeaderVisitCount('本頁累計拜訪人數：無法取得');
+						if (visitCountEl) visitCountEl.textContent = '本頁累計拜訪人數：無法取得';
+					});
+			}
+
 			function setHeaderVisitCount(text) {
 				var el = document.getElementById('visit-count-header');
 				if (el) el.textContent = text;
 			}
 
-			if (apiKey && propertyId) {
-				fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${apiKey}`
-					},
-					body: JSON.stringify({
-						dateRanges: [{ startDate: '2020-01-01', endDate: 'today' }],
-						metrics: [{ name: 'screenPageViews' }],
-						dimensions: [{ name: 'pagePath' }],
-						dimensionFilter: {
-							filter: {
-								fieldName: 'pagePath',
-								stringFilter: { value: '/index.html' }
-							}
-						}
-					})
-				})
-				.then(res => res.json())
-				.then(data => {
-					const count = data.rows && data.rows[0] ? data.rows[0].metricValues[0].value : null;
-					if (count) {
-						setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
-					}
-				})
-				.catch(() => {});
-			} else if (visitCountEl) {
-				visitCountEl.textContent = '本頁累計拜訪人數：請由管理員於GA4後台查詢';
-			}
+			updateVisitCount();
 		});
 	</script>
 
