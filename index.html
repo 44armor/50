@@ -107,21 +107,30 @@
 						let count = 0;
 						if (data.length > 0) {
 							count = parseInt(data[0].count) || 0;
-						}
-						// 增加1
-						count++;
-						// 更新 SheetDB
-						fetch(`${SHEETDB_API_URL}/id/${data[0] ? data[0].id : ''}`, {
-							method: data[0] ? 'PATCH' : 'POST',
-							headers: { 'Content-Type': 'application/json' },
-							body: JSON.stringify({
-								data: data[0] ? { count: count } : { page_id: PAGE_ID, count: count }
+							count++;
+							// 更新 SheetDB
+							fetch(`${SHEETDB_API_URL}/id/${data[0].id}`, {
+								method: 'PATCH',
+								headers: { 'Content-Type': 'application/json' },
+								body: JSON.stringify({ data: { count: count } })
 							})
-						})
-						.then(() => {
-							setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
-							if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
-						});
+							.then(() => {
+								setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
+								if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
+							});
+						} else {
+							// 新增一筆
+							count = 1;
+							fetch(`${SHEETDB_API_URL}`, {
+								method: 'POST',
+								headers: { 'Content-Type': 'application/json' },
+								body: JSON.stringify({ data: { page_id: PAGE_ID, count: count } })
+							})
+							.then(() => {
+								setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
+								if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
+							});
+						}
 					})
 					.catch(() => {
 						setHeaderVisitCount('本頁累計拜訪人數：無法取得');
