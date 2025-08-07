@@ -93,7 +93,7 @@
 			}
 
 			// SheetDB 訪問計數器
-			const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/7w5r8owgrglqq'; // 請替換為你的 SheetDB API
+			const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/6vsyun0q1rka4'; // 請替換為你的 SheetDB API
 			const PAGE_ID = 'index.html';
 			const visitCountEl = document.getElementById('visit-count');
 			const visitCountHeaderEl = document.getElementById('visit-count-header');
@@ -103,33 +103,42 @@
 				// 先讀取目前計數
 				fetch(`${SHEETDB_API_URL}/search?page_id=${PAGE_ID}`)
 					.then(res => res.json())
-					.then(data => {
+					.then(async data => {
 						let count = 0;
 						if (data.length > 0) {
-							count = parseInt(data[0].count) || 0;
+							count = parseInt(data[0].count, 10);
+							if (isNaN(count)) count = 0;
 							count++;
 							// 更新 SheetDB
-							fetch(`${SHEETDB_API_URL}/id/${data[0].id}`, {
-								method: 'PATCH',
-								headers: { 'Content-Type': 'application/json' },
-								body: JSON.stringify({ data: { count: count } })
-							})
-							.then(() => {
+							try {
+								const patchRes = await fetch(`${SHEETDB_API_URL}/id/${data[0].id}`, {
+									method: 'PATCH',
+									headers: { 'Content-Type': 'application/json' },
+									body: JSON.stringify({ data: { count: count } })
+								});
+								if (!patchRes.ok) throw new Error('PATCH failed');
 								setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
 								if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
-							});
+							} catch (err) {
+								setHeaderVisitCount('本頁累計拜訪人數：更新失敗');
+								if (visitCountEl) visitCountEl.textContent = '本頁累計拜訪人數：更新失敗';
+							}
 						} else {
 							// 新增一筆
 							count = 1;
-							fetch(`${SHEETDB_API_URL}`, {
-								method: 'POST',
-								headers: { 'Content-Type': 'application/json' },
-								body: JSON.stringify({ data: { page_id: PAGE_ID, count: count } })
-							})
-							.then(() => {
+							try {
+								const postRes = await fetch(`${SHEETDB_API_URL}`, {
+									method: 'POST',
+									headers: { 'Content-Type': 'application/json' },
+									body: JSON.stringify({ data: { page_id: PAGE_ID, count: count } })
+								});
+								if (!postRes.ok) throw new Error('POST failed');
 								setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
 								if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
-							});
+							} catch (err) {
+								setHeaderVisitCount('本頁累計拜訪人數：新增失敗');
+								if (visitCountEl) visitCountEl.textContent = '本頁累計拜訪人數：新增失敗';
+							}
 						}
 					})
 					.catch(() => {
