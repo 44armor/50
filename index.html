@@ -25,7 +25,7 @@
 			<h1 class="site-title" style="text-align:center;width:100%;margin:0 auto;">
 				<a href="index.html" style="display:inline-block;">陸軍軍官學校四十四期裝甲兵畢業五十周年紀念冊</a>
 			</h1>
-			<span id="visit-count-header" style="position:absolute;top:0;right:0;color:#888;font-size:0.95em;padding:8px 18px;"></span>
+			<span id="visit-count-header" style="position:absolute;top:0;right:0;color:#2196f3;font-size:0.95em;padding:8px 18px;"></span>
 			<button class="menu-toggle" aria-label="選單切換">☰</button>
 		</div>
 	</header>
@@ -116,11 +116,11 @@
 									body: JSON.stringify({ data: { count: count } })
 								});
 								if (!patchRes.ok) throw new Error('PATCH failed');
-								setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
-								if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
+								setHeaderVisitCount(`累計訪問人數：${count}`);
+								if (visitCountEl) visitCountEl.textContent = `累計訪問人數：${count}`;
 							} catch (err) {
-								setHeaderVisitCount('本頁累計拜訪人數：更新失敗');
-								if (visitCountEl) visitCountEl.textContent = '本頁累計拜訪人數：更新失敗';
+								setHeaderVisitCount('累計訪問人數：更新失敗');
+								if (visitCountEl) visitCountEl.textContent = '累計訪問人數：更新失敗';
 							}
 						} else {
 							// 新增一筆
@@ -132,17 +132,17 @@
 									body: JSON.stringify({ data: { page_id: PAGE_ID, count: count } })
 								});
 								if (!postRes.ok) throw new Error('POST failed');
-								setHeaderVisitCount(`本頁累計拜訪人數：${count}`);
-								if (visitCountEl) visitCountEl.textContent = `本頁累計拜訪人數：${count}`;
+								setHeaderVisitCount(`累計訪問人數：${count}`);
+								if (visitCountEl) visitCountEl.textContent = `累計訪問人數：${count}`;
 							} catch (err) {
-								setHeaderVisitCount('本頁累計拜訪人數：新增失敗');
-								if (visitCountEl) visitCountEl.textContent = '本頁累計拜訪人數：新增失敗';
+								setHeaderVisitCount('累計訪問人數：新增失敗');
+								if (visitCountEl) visitCountEl.textContent = '累計訪問人數：新增失敗';
 							}
 						}
 					})
 					.catch(() => {
-						setHeaderVisitCount('本頁累計拜訪人數：無法取得');
-						if (visitCountEl) visitCountEl.textContent = '本頁累計拜訪人數：無法取得';
+						setHeaderVisitCount('累計訪問人數：無法取得');
+						if (visitCountEl) visitCountEl.textContent = '累計訪問人數：無法取得';
 					});
 			}
 
