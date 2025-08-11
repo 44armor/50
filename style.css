@@ -1,3 +1,17 @@
+@media (max-width: 767px) {
+    #visit-count-header {
+        position: static !important;
+        display: block;
+        text-align: center;
+        margin: 8px auto 0 auto;
+        padding: 4px 0 0 0;
+        width: 100%;
+    }
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
 /*
 Theme Name: Simple Armor Theme
 Description: Simplified custom styles for the 陸軍官校四十四期裝甲兵畢業50週年紀念 website.
