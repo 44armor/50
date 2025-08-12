@@ -316,6 +316,13 @@ body {
     background-color: #000; /* Dark background for footer */
     color: #fff;
     text-align: center;
+    .site-header {
+        z-index: 2000; /* header 層級略低於 sidebar */
+    }
+    
+    .site-sidebar {
+        z-index: 2001; /* 提高 sidebar 層級，確保在 header 之上 */
+    }
     padding: 20px 0;
     margin-top: 20px; /* Space above footer */
 }
@@ -324,7 +331,7 @@ body {
 @media (max-width: 1024px) {
     .site-title {
         font-size: 22px;
-        text-align: left; /* Align title left on tablet */
+        z-index: 2001; /* 提高 sidebar 層級，確保在 header 之上 */
     }
 
     .menu-toggle {
