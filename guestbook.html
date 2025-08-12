@@ -184,7 +184,7 @@
 
 
 						// Google Apps Script API URL
-						const API_URL = 'https://script.google.com/macros/s/AKfycbywKDN_KECU2Y9U5sLEsdEF04XvT1EjRCQQp0-o3_9Z_bgKv-b8CTYVoIvIXFloRiOj/exec';
+						const API_URL = 'https://script.google.com/macros/s/AKfycbyd7AQu59OW-b1_dz7FcH3f6Gx37gn05maRTVl39tmUMIV6MiLarwca_PDGva4vfzpB/exec';
 
 						// 取得留言
 						function loadMessages() {
@@ -215,20 +215,21 @@
 						if (guestbookForm) {
 							guestbookForm.addEventListener('submit', function(e) {
 								e.preventDefault();
-								const name = document.getElementById('name').value.trim() || '匿名';
-								const message = document.getElementById('message').value.trim();
-								if (!message) return showNotification('請填寫留言內容', 'error');
-								fetch(API_URL, {
-									method: 'POST',
-									body: JSON.stringify({type: 'message', name, message})
-								}).then(() => {
-									showNotification('留言提交成功！', 'success');
-									guestbookForm.reset();
-									charCount.textContent = '0';
-									loadMessages();
-								}).catch(() => {
-									showNotification('留言提交失敗', 'error');
-								});
+												const name = document.getElementById('name').value.trim() || '匿名';
+												const email = document.getElementById('email').value.trim();
+												const message = document.getElementById('message').value.trim();
+												if (!message) return showNotification('請填寫留言內容', 'error');
+												fetch(API_URL, {
+													method: 'POST',
+													body: JSON.stringify({type: 'message', name, email, message})
+												}).then(() => {
+													showNotification('留言提交成功！', 'success');
+													guestbookForm.reset();
+													charCount.textContent = '0';
+													loadMessages();
+												}).catch(() => {
+													showNotification('留言提交失敗', 'error');
+												});
 							});
 						}
 
