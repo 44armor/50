@@ -272,12 +272,12 @@ body {
 /* 手機版調整 (如果需要更細緻的控制，雖然 auto-fill 已經很好了) */
 @media (max-width: 767px) {
     .member-profiles-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 在小螢幕上可以縮小一點 */
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr) !important; /* 手機版固定三欄 */
+        gap: 8px;
     }
     .member-entry-title {
         font-size: 1em;
-        padding: 10px;
+        padding: 8px;
     }
 }
 
