@@ -1,3 +1,6 @@
+.site-header {
+    position: relative;
+}
 @media (max-width: 767px) {
     #visit-count-header {
         position: static !important;
@@ -16,9 +19,17 @@
     .menu-toggle {
         align-self: flex-start;
         margin-bottom: 4px;
-        position: relative;
-        left: 0;
-        top: 0;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        z-index: 3000 !important;
+        background: rgba(0,0,0,0.01); /* 讓點擊區域不透明但不影響外觀 */
+        width: 44px;
+        height: 44px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
     }
     .site-title {
         text-align: center;
