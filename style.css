@@ -418,6 +418,54 @@ body {
 .guestbook-welcome {
     text-align: center;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+/* --- 強化手機選單操作 --- */
+@media (max-width: 1024px) {
+    .menu-toggle {
+        display: block !important;
+        position: absolute;
+        left: 15px;
+        top: 18px;
+        z-index: 1300;
+    }
+    .site-sidebar {
+        width: 80vw;
+        max-width: 320px;
+        position: fixed;
+        left: -100vw;
+        top: 0;
+        height: 100vh;
+        background: #1a202c;
+        z-index: 1200;
+        box-shadow: 2px 0 16px rgba(0,0,0,0.18);
+        transition: left 0.3s cubic-bezier(.4,0,.2,1);
+        padding-top: 70px;
+        border-radius: 0;
+    }
+    .site-sidebar.is-open {
+        left: 0;
+    }
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 1100;
+    }
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
+@media (max-width: 767px) {
+    .menu-toggle {
+        top: 10px;
+        left: 10px;
+    }
+    .site-sidebar {
+        width: 90vw;
+        max-width: 98vw;
+        padding-top: 60px;
+    }
+}
     padding: 40px 30px;
     border-radius: 16px;
     margin-bottom: 30px;
