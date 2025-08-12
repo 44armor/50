@@ -105,15 +105,15 @@
 					</div>
 				</div>
 
-				<!-- 留言列表 -->
-				<div id="guestbook-messages" class="guestbook-messages">
-<div class="messages-header">
-<h3>💭 留言列表</h3>
-</div>
-					<ul id="messages-list" class="messages-list">
-						<!-- 留言將在這裡顯示 -->
-					</ul>
-				</div>
+						<!-- 留言列表 -->
+						<div id="guestbook-messages" class="guestbook-messages">
+							<div class="messages-header">
+								<h3>💭 留言列表</h3>
+							</div>
+							<ul id="messages-list" class="messages-list">
+								<!-- 留言將在這裡顯示 -->
+							</ul>
+						</div>
 			</div>
 		</section>
 	</main>
@@ -182,65 +182,55 @@
 			}
 
 
-			// SheetDB API URL
-			const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/08vh279maefzb'; // 已換成你的 SheetDB API 網址
 
+						// Google Apps Script API URL
+						const API_URL = 'https://script.google.com/macros/s/AKfycbywKDN_KECU2Y9U5sLEsdEF04XvT1EjRCQQp0-o3_9Z_bgKv-b8CTYVoIvIXFloRiOj/exec';
 
-// 全域留言資料
-let allMessages = [];
+						// 取得留言
+						function loadMessages() {
+							fetch(API_URL)
+								.then(res => res.json())
+								.then(data => {
+									const ul = document.getElementById('messages-list');
+									ul.innerHTML = '';
+									(data.messages || []).forEach(msg => {
+										const li = document.createElement('li');
+										li.className = 'message-item';
+										li.innerHTML = `<div class="message-avatar">${msg.name ? msg.name.charAt(0) : '?'}</div>
+											<div class="message-content-wrapper">
+												<div class="message-header">
+													<span class="message-author">${msg.name}</span>
+													<span class="message-date">${msg.timestamp}</span>
+												</div>
+												<div class="message-content">${msg.message}</div>
+											</div>`;
+										ul.appendChild(li);
+									});
+									updateStats();
+								});
+						}
+						loadMessages();
 
-// 渲染留言列表（預設依照資料順序）
-function renderMessages() {
-	messagesList.innerHTML = '';
-	allMessages.forEach(msg => {
-		const li = createMessageElement(msg.name, msg.message, msg.date, msg.email);
-		messagesList.appendChild(li);
-	});
-	updateStats();
-}
-
-			// 載入留言（從 SheetDB）
-			function loadMessagesFromSheetDB() {
-				fetch(SHEETDB_API_URL)
-				  .then(res => res.json())
-				  .then(messages => {
-					allMessages = messages;
-					renderMessages();
-				  });
-			}
-
-			// 初始化載入留言
-			loadMessagesFromSheetDB();
-
-			if (guestbookForm) {
-				guestbookForm.addEventListener('submit', function(e) {
-					e.preventDefault();
-					const name = document.getElementById('name').value.trim();
-					const email = document.getElementById('email').value.trim();
-					const message = document.getElementById('message').value.trim();
-					const date = new Date().toLocaleString('zh-TW');
-					if (name && message) {
-						fetch(SHEETDB_API_URL, {
-							method: 'POST',
-							headers: { 'Content-Type': 'application/json' },
-							body: JSON.stringify({ data: { date, name, email, message } })
-						})
-						.then(res => res.json())
-						.then(() => {
-							showNotification('留言提交成功！', 'success');
-							guestbookForm.reset();
-							charCount.textContent = '0';
-							loadMessagesFromSheetDB();
-						})
-						.catch(e => {
-							console.error(e);
-							showNotification('留言提交失敗', 'error');
-						});
-					} else {
-						showNotification('請填寫姓名和留言內容', 'error');
-					}
-				});
-			}
+						// 送出留言
+						if (guestbookForm) {
+							guestbookForm.addEventListener('submit', function(e) {
+								e.preventDefault();
+								const name = document.getElementById('name').value.trim() || '匿名';
+								const message = document.getElementById('message').value.trim();
+								if (!message) return showNotification('請填寫留言內容', 'error');
+								fetch(API_URL, {
+									method: 'POST',
+									body: JSON.stringify({type: 'message', name, message})
+								}).then(() => {
+									showNotification('留言提交成功！', 'success');
+									guestbookForm.reset();
+									charCount.textContent = '0';
+									loadMessages();
+								}).catch(() => {
+									showNotification('留言提交失敗', 'error');
+								});
+							});
+						}
 
 			function createMessageElement(name, message, date, email) {
 				const li = document.createElement('li');

@@ -91,67 +91,23 @@
 				});
 			}
 
-			// SheetDB 訪問計數器
-			const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/6vsyun0q1rka4'; // 請替換為你的 SheetDB API
-			const PAGE_ID = 'index.html';
-			const visitCountEl = document.getElementById('visit-count');
-			const visitCountHeaderEl = document.getElementById('visit-count-header');
-
-			// 讀取並更新計數
-			function updateVisitCount() {
-				// 先讀取目前計數
-				fetch(`${SHEETDB_API_URL}/search?page_id=${PAGE_ID}`)
-					.then(res => res.json())
-					.then(async data => {
-						let count = 0;
-						if (data.length > 0) {
-							count = parseInt(data[0].count, 10);
-							if (isNaN(count)) count = 0;
-							count++;
-							// 更新 SheetDB
-							try {
-								const patchRes = await fetch(`${SHEETDB_API_URL}/id/${data[0].id}`, {
-									method: 'PATCH',
-									headers: { 'Content-Type': 'application/json' },
-									body: JSON.stringify({ data: { count: count } })
+						// Google Apps Script 訪問計數器
+						const API_URL = 'https://script.google.com/macros/s/AKfycbywKDN_KECU2Y9U5sLEsdEF04XvT1EjRCQQp0-o3_9Z_bgKv-b8CTYVoIvIXFloRiOj/exec';
+						const visitCountHeaderEl = document.getElementById('visit-count-header');
+						function updateVisitCount() {
+							fetch(API_URL, {
+								method: 'POST',
+								body: JSON.stringify({type: 'count'})
+							})
+								.then(res => res.json())
+								.then(data => {
+									if (visitCountHeaderEl) visitCountHeaderEl.textContent = `累計訪問人數：${data.count}`;
+								})
+								.catch(() => {
+									if (visitCountHeaderEl) visitCountHeaderEl.textContent = '累計訪問人數：無法取得';
 								});
-								if (!patchRes.ok) throw new Error('PATCH failed');
-								setHeaderVisitCount(`累計訪問人數：${count}`);
-								if (visitCountEl) visitCountEl.textContent = `累計訪問人數：${count}`;
-							} catch (err) {
-								setHeaderVisitCount('累計訪問人數：更新失敗');
-								if (visitCountEl) visitCountEl.textContent = '累計訪問人數：更新失敗';
-							}
-						} else {
-							// 新增一筆
-							count = 1;
-							try {
-								const postRes = await fetch(`${SHEETDB_API_URL}`, {
-									method: 'POST',
-									headers: { 'Content-Type': 'application/json' },
-									body: JSON.stringify({ data: { page_id: PAGE_ID, count: count } })
-								});
-								if (!postRes.ok) throw new Error('POST failed');
-								setHeaderVisitCount(`累計訪問人數：${count}`);
-								if (visitCountEl) visitCountEl.textContent = `累計訪問人數：${count}`;
-							} catch (err) {
-								setHeaderVisitCount('累計訪問人數：新增失敗');
-								if (visitCountEl) visitCountEl.textContent = '累計訪問人數：新增失敗';
-							}
 						}
-					})
-					.catch(() => {
-						setHeaderVisitCount('累計訪問人數：無法取得');
-						if (visitCountEl) visitCountEl.textContent = '累計訪問人數：無法取得';
-					});
-			}
-
-			function setHeaderVisitCount(text) {
-				var el = document.getElementById('visit-count-header');
-				if (el) el.textContent = text;
-			}
-
-			updateVisitCount();
+						updateVisitCount();
 		});
 	</script>
 
