@@ -9,8 +9,33 @@
     }
     .header-content {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 6px;
+        position: relative;
     }
+    .menu-toggle {
+        align-self: flex-start;
+        margin-bottom: 4px;
+        position: relative;
+        left: 0;
+        top: 0;
+    }
+    .site-title {
+        text-align: center;
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+/* 強化 sidebar 與 overlay 層級與動畫 */
+.site-sidebar {
+    z-index: 2001 !important;
+}
+.site-sidebar.is-open {
+    left: 0 !important;
+    transition: left 0.3s cubic-bezier(.4,0,.2,1);
+}
+.sidebar-overlay {
+    z-index: 2000 !important;
 }
 /*
 Theme Name: Simple Armor Theme
