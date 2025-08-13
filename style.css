@@ -341,11 +341,6 @@ body {
     }
 }
 
-.chapter-category.index .pdf-links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 1fr);
-}
-
 /* 每個 PDF 連結外框 */
 .pdf-link-entry {
     border: 1px solid #ccc;
