@@ -184,7 +184,7 @@
 
 
 						// Google Apps Script API URL
-						const API_URL = 'https://script.google.com/macros/s/AKfycbxOVnTN-10DrYQzthixcRdwJHpCCivKRUBQMKYRqOQERZUfso8SmxlKbY-xSRw81l6C/exec';
+						const API_URL = 'https://script.google.com/macros/s/AKfycbzazws94n2u6_5Sk04m9rOECswV3Tnun-vKbAWTC-PWz4dwSU57B2IPgL9dlUW-B_0U/exec';
 
 						// 取得留言
 						function loadMessages() {
@@ -220,23 +220,18 @@
 																const name = document.getElementById('name').value.trim() || '匿名';
 																const email = document.getElementById('email').value.trim();
 																const message = document.getElementById('message').value.trim();
-																// 產生台灣格式日期字串
-																function formatDateTW(date) {
-																	return date.toLocaleString('zh-TW', { hour12: true });
-																}
-																const date = formatDateTW(new Date());
-																if (!message) return showNotification('請填寫留言內容', 'error');
-																fetch(API_URL, {
-																	method: 'POST',
-																	body: JSON.stringify({type: 'message', name, email, message, date})
-																}).then(() => {
-																	showNotification('留言提交成功！', 'success');
-																	guestbookForm.reset();
-																	charCount.textContent = '0';
-																	loadMessages();
-																}).catch(() => {
-																	showNotification('留言提交失敗', 'error');
-																});
+																				if (!message) return showNotification('請填寫留言內容', 'error');
+																				fetch(API_URL, {
+																					method: 'POST',
+																					body: JSON.stringify({type: 'message', name, email, message})
+																				}).then(() => {
+																					showNotification('留言提交成功！', 'success');
+																					guestbookForm.reset();
+																					charCount.textContent = '0';
+																					loadMessages();
+																				}).catch(() => {
+																					showNotification('留言提交失敗', 'error');
+																				});
 							});
 						}
 
