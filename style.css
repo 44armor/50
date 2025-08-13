@@ -1089,3 +1089,24 @@ body {
         font-size: 13px;
     }
 }
+
+/* 調整索引區塊與 pdf-links-grid 寬度一致 */
+.index-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+@media (max-width: 1024px) {
+    .index-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .index-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
