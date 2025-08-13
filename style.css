@@ -340,25 +340,6 @@ body {
         grid-template-columns: repeat(3, minmax(100px, 1fr));
     }
 }
-
-.chapter-category.index .pdf-links-grid {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(100px, 1fr));
-    gap: 10px;
-    margin: 0 auto;
-    max-width: 900px;
-}
-@media (max-width: 1024px) {
-    .chapter-category.index .pdf-links-grid {
-        grid-template-columns: repeat(4, minmax(100px, 1fr));
-    }
-}
-
-@media (max-width: 767px) {
-    .chapter-category.index .pdf-links-grid {
-        grid-template-columns: repeat(3, minmax(100px, 1fr));
-    }
-}
 /* 每個 PDF 連結外框 */
 .pdf-link-entry {
     border: 1px solid #ccc;
