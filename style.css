@@ -344,7 +344,6 @@ body {
 .chapter-category.index .pdf-links-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, 1fr);
-    gap: 10px;
 }
 
 /* 每個 PDF 連結外框 */
