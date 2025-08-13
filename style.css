@@ -323,7 +323,7 @@ body {
 /* 連結列表使用 Grid 排版 */
 .pdf-links-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, 1fr);
     gap: 10px;
     margin: 0 auto;
     max-width: 900px;
