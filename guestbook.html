@@ -196,11 +196,13 @@
 									(data.messages || []).forEach(msg => {
 										const li = document.createElement('li');
 										li.className = 'message-item';
+										// 優先顯示 msg.date，否則顯示 msg.timestamp
+										const dateStr = msg.date || msg.timestamp || '';
 										li.innerHTML = `<div class="message-avatar">${msg.name ? msg.name.charAt(0) : '?'}</div>
 											<div class="message-content-wrapper">
 												<div class="message-header">
 													<span class="message-author">${msg.name}</span>
-													<span class="message-date">${msg.timestamp}</span>
+													<span class="message-date">${dateStr}</span>
 												</div>
 												<div class="message-content">${msg.message}</div>
 											</div>`;
