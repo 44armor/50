@@ -323,7 +323,7 @@ body {
 /* 連結列表使用 Grid 排版 */
 .pdf-links-grid {
     display: grid;
-    grid-template-columns: repeat(6, 100px);
+    grid-template-columns: repeat(6, minmax(100px, 1fr));
     gap: 10px;
     margin: 0 auto;
     max-width: 900px;
@@ -331,13 +331,13 @@ body {
 
 @media (max-width: 1024px) {
     .pdf-links-grid {
-        grid-template-columns: repeat(4, 100px);
+        grid-template-columns: repeat(4, minmax(100px, 1fr));
     }
 }
 
 @media (max-width: 767px) {
     .pdf-links-grid {
-        grid-template-columns: repeat(3, 100px);
+        grid-template-columns: repeat(3, minmax(100px, 1fr));
     }
 }
 
