@@ -345,6 +345,8 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
+    margin: 0 auto;
+    max-width: 900px;
 }
 /* 每個 PDF 連結外框 */
 .pdf-link-entry {
