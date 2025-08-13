@@ -325,18 +325,13 @@ body {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
-    margin: 10px auto 20px auto;
+    margin: 0 auto;
     max-width: 900px;
 }
 
 @media (max-width: 1024px) {
     .pdf-links-grid {
         grid-template-columns: repeat(4, 1fr);
-    }
-}
-@media (max-width: 767px) {
-    .pdf-links-grid {
-        grid-template-columns: repeat(3, 1fr);
     }
 }
 
