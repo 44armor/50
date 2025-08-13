@@ -343,10 +343,21 @@ body {
 
 .chapter-category.index .pdf-links-grid {
     display: grid;
-    grid-template-columns: repeat(1, minmax(430px, 1fr));
+    grid-template-columns: repeat(1, minmax(500px, 1fr));
     gap: 10px;
     margin: 0 auto;
     max-width: 900px;
+}
+@media (max-width: 1024px) {
+    .chapter-category.index .pdf-links-grid {
+        grid-template-columns: repeat(1, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .chapter-category.index .pdf-links-grid {
+        grid-template-columns: repeat(1, minmax(200px, 1fr));
+    }
 }
 /* 每個 PDF 連結外框 */
 .pdf-link-entry {
