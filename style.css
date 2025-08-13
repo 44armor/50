@@ -343,7 +343,7 @@ body {
 
 .chapter-category.index .pdf-links-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(6, minmax(450px, 1fr));
     gap: 10px;
     margin: 0 auto;
     max-width: 900px;
