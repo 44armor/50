@@ -345,7 +345,6 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, 1fr);
     gap: 10px;
-    margin: 0 auto;
 }
 
 /* 每個 PDF 連結外框 */
