@@ -243,10 +243,10 @@ body {
 /* 將以下樣式添加到您的 style.css 檔案中 */
 
 .member-profiles-grid {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr); /* 電腦六欄 */
-        gap: 20px;
-        margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 電腦六欄 */
+    gap: 20px;
+    margin-top: 20px;
 }
 
 @media (max-width: 1024px) {
@@ -257,7 +257,7 @@ body {
 @media (max-width: 767px) {
     .member-profiles-grid {
         grid-template-columns: repeat(3, 1fr); /* 手機三欄 */
-        gap: 10px;
+        gap: 8px;
     }
 }
 
@@ -295,17 +295,6 @@ body {
     font-weight: bold;
 }
 
-/* 手機版調整 (如果需要更細緻的控制，雖然 auto-fill 已經很好了) */
-@media (max-width: 767px) {
-    .member-profiles-grid {
-        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); /* 自動最適欄數 */
-        gap: 8px;
-    }
-    .member-entry-title {
-        font-size: 1em;
-        padding: 8px;
-    }
-}
 
 .chapter-category {
     margin-left: 20px;
@@ -333,10 +322,13 @@ body {
 
 /* 連結列表使用 Grid 排版 */
 .pdf-links-grid {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 10px;
-        margin: 10px 0 20px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin: 10px 0 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (max-width: 1024px) {
