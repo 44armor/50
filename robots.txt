@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemap 位置
+Sitemap: https://44armor.github.io/50/sitemap.xml
+

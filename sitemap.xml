@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- 首頁 -->
+  <url>
+    <loc>https://44armor.github.io/50/</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- 封面 -->
+  <url>
+    <loc>https://44armor.github.io/50/index.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- 封面內頁 -->
+  <url>
+    <loc>https://44armor.github.io/50/inner-cover.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- 序言 -->
+  <url>
+    <loc>https://44armor.github.io/50/preface.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- 賀詞 -->
+  <url>
+    <loc>https://44armor.github.io/50/greetings.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- 目錄 -->
+  <url>
+    <loc>https://44armor.github.io/50/catalog.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- 述懷 -->
+  <url>
+    <loc>https://44armor.github.io/50/memories.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- 生平記要 -->
+  <url>
+    <loc>https://44armor.github.io/50/biography.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- 紀念圖冊 -->
+  <url>
+    <loc>https://44armor.github.io/50/photo-album.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- 編輯後記 -->
+  <url>
+    <loc>https://44armor.github.io/50/postscript.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- 版權頁 -->
+  <url>
+    <loc>https://44armor.github.io/50/copyright.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- 封底內頁 -->
+  <url>
+    <loc>https://44armor.github.io/50/back-inner-cover.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- 封底 -->
+  <url>
+    <loc>https://44armor.github.io/50/back-cover.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- 留言板 -->
+  <url>
+    <loc>https://44armor.github.io/50/guestbook.html</loc>
+    <lastmod>2025-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+</urlset>
+
