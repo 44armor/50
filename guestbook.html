@@ -71,25 +71,36 @@
 						<div class="form-row">
 							<div class="form-group">
 								<label for="name">姓名 <span class="required">*</span></label>
-								<input type="text" id="name" name="name" placeholder="請輸入您的姓名" required>
+								<input type="text" id="name" name="name" maxlength="50" placeholder="請輸入您的姓名" required>
 							</div>
 							<div class="form-group">
 								<label for="email">電子郵件</label>
-								<input type="email" id="email" name="email" placeholder="選填，用於聯繫">
+								<input type="email" id="email" name="email" maxlength="100" placeholder="選填，用於聯繫">
 							</div>
+						</div>
+
+						<!-- 防機器人蜜罐欄位（人類看不到，自動填表機器人會誤填） -->
+						<div style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+							<label for="website">個人網站（請留空）</label>
+							<input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
 						</div>
 
 						<div class="form-group">
 							<label for="message">留言內容 <span class="required">*</span></label>
-							<textarea id="message" name="message" rows="5" placeholder="請分享您的祝福、回憶或感想..." required></textarea>
+							<textarea id="message" name="message" rows="5" maxlength="500" placeholder="請分享您的祝福、回憶或感想..." required></textarea>
 							<div class="char-counter">
 								<span id="char-count">0</span> / 500 字
 							</div>
 						</div>
 
+						<div class="form-group">
+							<label for="verify-answer">防垃圾驗證：本紀念冊為陸官第幾期？（請輸入 44） <span class="required">*</span></label>
+							<input type="text" id="verify-answer" name="verify-answer" maxlength="10" inputmode="numeric" placeholder="請輸入 44" autocomplete="off" required>
+						</div>
+
 						<div class="form-actions">
 							<button type="button" class="clear-btn" onclick="clearForm()">清空</button>
-							<button type="submit" class="submit-btn">
+							<button type="submit" id="submit-btn" class="submit-btn">
 								<span class="btn-icon">📤</span>
 								提交留言
 							</button>
@@ -193,8 +204,84 @@
 
 						// Google Apps Script API URL
 						const API_URL = 'https://script.google.com/macros/s/AKfycbzazws94n2u6_5Sk04m9rOECswV3Tnun-vKbAWTC-PWz4dwSU57B2IPgL9dlUW-B_0U/exec';
+						const PAGE_LOADED_AT = Date.now();
+						const COOLDOWN_MS = 30 * 1000; // 同裝置兩次留言至少間隔 30 秒
+						const COOLDOWN_KEY = 'armor44_guestbook_last_submit';
+						let isSubmitting = false;
 
-						// 取得留言
+						// 文字清洗：移除控制字元、過濾 HTML 標籤並整理多餘空白
+						function sanitizeText(str, maxLen) {
+							if (typeof str !== 'string') return '';
+							let cleaned = str
+								.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+								.replace(/<script[\s\S]*?<\/script>/gi, '')
+								.replace(/<style[\s\S]*?<\/style>/gi, '')
+								.replace(/<[^>]+>/g, '')
+								.replace(/\r\n/g, '\n')
+								.replace(/\n{3,}/g, '\n\n')
+								.trim();
+							if (maxLen && cleaned.length > maxLen) {
+								cleaned = cleaned.slice(0, maxLen);
+							}
+							return cleaned;
+						}
+
+						// 檢查驗證題答案（支援半形 44、全形 ４４、中文 四十四）
+						function isValidVerifyAnswer(raw) {
+							const normalized = (raw || '')
+								.replace(/[０-９]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0))
+								.replace(/[\s期第]/g, '')
+								.trim();
+							return normalized === '44' || normalized === '四十四';
+						}
+
+						// 簡易垃圾內容偵測（過多網址或疑似腳本注入）
+						function isLikelySpam(text) {
+							if (/(<\s*script|javascript:|onerror\s*=|onload\s*=)/i.test(text)) return true;
+							const urlMatches = text.match(/https?:\/\/|www\./gi) || [];
+							if (urlMatches.length > 2) return true;
+							return false;
+						}
+
+						// 安全建立留言節點（全面使用 textContent 防止 XSS）
+						function createSafeMessageElement(name, message, dateStr) {
+							const li = document.createElement('li');
+							li.className = 'message-item';
+
+							const avatar = document.createElement('div');
+							avatar.className = 'message-avatar';
+							avatar.textContent = name ? Array.from(name)[0] : '?';
+
+							const wrapper = document.createElement('div');
+							wrapper.className = 'message-content-wrapper';
+
+							const header = document.createElement('div');
+							header.className = 'message-header';
+
+							const authorEl = document.createElement('span');
+							authorEl.className = 'message-author';
+							authorEl.textContent = name || '匿名';
+
+							const dateEl = document.createElement('span');
+							dateEl.className = 'message-date';
+							dateEl.textContent = dateStr || '';
+
+							const contentEl = document.createElement('div');
+							contentEl.className = 'message-content';
+							contentEl.style.whiteSpace = 'pre-wrap';
+							contentEl.style.wordBreak = 'break-word';
+							contentEl.textContent = message;
+
+							header.appendChild(authorEl);
+							header.appendChild(dateEl);
+							wrapper.appendChild(header);
+							wrapper.appendChild(contentEl);
+							li.appendChild(avatar);
+							li.appendChild(wrapper);
+							return li;
+						}
+
+						// 取得留言（自動清洗空列與異常標籤）
 						function loadMessages() {
 							fetch(API_URL)
 								.then(res => res.json())
@@ -202,79 +289,108 @@
 									const ul = document.getElementById('messages-list');
 									ul.innerHTML = '';
 									(data.messages || []).forEach(msg => {
-										const li = document.createElement('li');
-										li.className = 'message-item';
-										// 優先顯示 msg.date，否則顯示 msg.timestamp
-										const dateStr = msg.date || msg.timestamp || '';
-										li.innerHTML = `<div class="message-avatar">${msg.name ? msg.name.charAt(0) : '?'}</div>
-											<div class="message-content-wrapper">
-												<div class="message-header">
-													<span class="message-author">${msg.name}</span>
-													<span class="message-date">${dateStr}</span>
-												</div>
-												<div class="message-content">${msg.message}</div>
-											</div>`;
-										ul.appendChild(li);
+										const cleanName = sanitizeText(String(msg.name || ''), 50) || '匿名';
+										const cleanMessage = sanitizeText(String(msg.message || ''), 500);
+										const cleanDate = sanitizeText(String(msg.date || msg.timestamp || ''), 50);
+										// 跳過試算表空白列或清洗後無內容的資料
+										if (!cleanMessage) return;
+										ul.appendChild(createSafeMessageElement(cleanName, cleanMessage, cleanDate));
 									});
 									updateStats();
+								})
+								.catch(() => {
+									showNotification('無法載入留言，請稍後再試', 'error');
 								});
 						}
 						loadMessages();
 
-						// 送出留言
+						// 送出留言（含防垃圾驗證、蜜罐檢查、頻率限制與字數清洗）
 						if (guestbookForm) {
 							guestbookForm.addEventListener('submit', function(e) {
 								e.preventDefault();
-																const name = document.getElementById('name').value.trim() || '匿名';
-																const email = document.getElementById('email').value.trim();
-																const message = document.getElementById('message').value.trim();
-																				if (!message) return showNotification('請填寫留言內容', 'error');
-																				fetch(API_URL, {
-																					method: 'POST',
-																					body: JSON.stringify({type: 'message', name, email, message})
-																				}).then(() => {
-																					showNotification('留言提交成功！', 'success');
-																					guestbookForm.reset();
-																					charCount.textContent = '0';
-																					loadMessages();
-																				}).catch(() => {
-																					showNotification('留言提交失敗', 'error');
-																				});
+								if (isSubmitting) return;
+
+								// 1. 蜜罐欄位被填寫 -> 判定為自動填表機器人，直接阻擋
+								const honeypot = document.getElementById('website');
+								if (honeypot && honeypot.value.trim() !== '') {
+									guestbookForm.reset();
+									charCount.textContent = '0';
+									return;
+								}
+
+								// 2. 頁面剛載入不到 2 秒即送出 -> 疑似機器人
+								if (Date.now() - PAGE_LOADED_AT < 2000) {
+									return showNotification('請稍候再提交留言', 'error');
+								}
+
+								// 3. 檢查驗證題
+								const verifyInput = document.getElementById('verify-answer');
+								if (!verifyInput || !isValidVerifyAnswer(verifyInput.value)) {
+									if (verifyInput) verifyInput.focus();
+									return showNotification('防垃圾驗證答案錯誤，請輸入 44', 'error');
+								}
+
+								// 4. 檢查 30 秒冷卻時間
+								try {
+									const lastSubmit = Number(localStorage.getItem(COOLDOWN_KEY) || 0);
+									const waitSec = Math.ceil((COOLDOWN_MS - (Date.now() - lastSubmit)) / 1000);
+									if (waitSec > 0) {
+										return showNotification(`提交過於頻繁，請於 ${waitSec} 秒後再試`, 'error');
+									}
+								} catch (err) {}
+
+								// 5. 清洗輸入資料並驗證
+								const rawName = document.getElementById('name').value;
+								const rawEmail = document.getElementById('email').value;
+								const rawMessage = document.getElementById('message').value;
+
+								if (isLikelySpam(rawName) || isLikelySpam(rawMessage)) {
+									return showNotification('留言包含不允許的語法或過多網址，請修改後再送出', 'error');
+								}
+
+								const name = sanitizeText(rawName, 50) || '匿名';
+								const email = sanitizeText(rawEmail, 100);
+								const message = sanitizeText(rawMessage, 500);
+
+								if (!message) return showNotification('請填寫有效留言內容', 'error');
+								if (message.length > 500) return showNotification('留言內容請控制在 500 字以內', 'error');
+
+								const submitBtn = document.getElementById('submit-btn');
+								isSubmitting = true;
+								if (submitBtn) submitBtn.disabled = true;
+
+								fetch(API_URL, {
+									method: 'POST',
+									body: JSON.stringify({type: 'message', name, email, message})
+								}).then(() => {
+									try { localStorage.setItem(COOLDOWN_KEY, String(Date.now())); } catch (err) {}
+									showNotification('留言提交成功！', 'success');
+									guestbookForm.reset();
+									charCount.textContent = '0';
+									loadMessages();
+								}).catch(() => {
+									showNotification('留言提交失敗，請稍後再試', 'error');
+								}).finally(() => {
+									isSubmitting = false;
+									if (submitBtn) submitBtn.disabled = false;
+								});
 							});
 						}
 
-			function createMessageElement(name, message, date, email) {
-				const li = document.createElement('li');
-				li.className = 'message-item';
-				const displayName = name;
-				const avatarText = name ? name.charAt(0) : '?';
-				const dateString = date || (new Date().toLocaleDateString('zh-TW') + ' ' + new Date().toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'}));
-				li.innerHTML = `
-					<div class="message-avatar">${avatarText}</div>
-					<div class="message-content-wrapper">
-						<div class="message-header">
-							<span class="message-author">${displayName}</span>
-							<span class="message-date">${dateString}</span>
-							${email ? `<span class='message-email' style='margin-left:8px;color:#888;font-size:0.9em;'>${email}</span>` : ''}
-						</div>
-						<div class="message-content">${message}</div>
-					</div>
-				`;
-				return li;
-			}
-
 			function updateStats() {
-				const totalMessages = document.querySelectorAll('.message-item').length;
-				document.getElementById('total-messages').textContent = totalMessages;
+				const items = Array.from(document.querySelectorAll('.message-item'));
+				document.getElementById('total-messages').textContent = items.length;
 
-				const todayMessages = Array.from(document.querySelectorAll('.message-item')).filter(li => {
-					const messageDate = new Date(li.querySelector('.message-date').textContent);
-					const today = new Date();
-					return messageDate.toDateString() === today.toDateString();
+				const todayStr = new Date().toDateString();
+				const todayMessages = items.filter(li => {
+					const rawDate = (li.querySelector('.message-date')?.textContent || '').trim();
+					if (!rawDate) return false;
+					const messageDate = new Date(rawDate);
+					return !isNaN(messageDate.getTime()) && messageDate.toDateString() === todayStr;
 				}).length;
 				document.getElementById('today-messages').textContent = todayMessages;
 
-				const uniqueAuthors = new Set(Array.from(document.querySelectorAll('.message-item')).map(li => li.querySelector('.message-author').textContent)).size;
+				const uniqueAuthors = new Set(items.map(li => li.querySelector('.message-author')?.textContent || '')).size;
 				document.getElementById('unique-authors').textContent = uniqueAuthors;
 			}
 
@@ -292,7 +408,7 @@
 					z-index: 1000;
 					transform: translateX(100%);
 					transition: transform 0.3s ease;
-					background: ${type === 'success' ? '#28a745' : '#dc3545'};
+					background: ${type === 'success' ? '#28a745' : (type === 'info' ? '#17a2b8' : '#dc3545')};
 				`;
 				notification.textContent = message;
 				
@@ -312,14 +428,15 @@
 				}, 3000);
 			}
 
-
-
-			// 清空表單功能
-			function clearForm() {
-				document.getElementById('guestbook-form').reset();
-				charCount.textContent = '0';
+			// 清空表單功能（掛載到 window 確保按鈕 onclick 可呼叫）
+			window.clearForm = function() {
+				if (guestbookForm) guestbookForm.reset();
+				if (charCount) {
+					charCount.textContent = '0';
+					charCount.style.color = '#6c757d';
+				}
 				showNotification('表單已清空', 'info');
-			}
+			};
 
 
 		});
